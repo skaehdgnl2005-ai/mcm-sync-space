@@ -159,7 +159,6 @@ POST `/generate` 요청에 붙인다. 헤더가 없으면 `success`.
 | `MOCK_DELAY_SECONDS` | | `5` | 성공 시나리오 지연. B의 로딩 연출 테스트용으로 조절 (변경 시 재기동 필요) |
 | `MOCK_SLOW_SECONDS` | | `75` | `slow` 시나리오 지연 |
 | `PUBLIC_BASE_URL` | | (요청 기반) | 샘플 이미지 절대 URL 조립용. Railway 도메인 확정 후 설정 권장 |
-| `LOG_LEVEL` | | `INFO` | 로그 레벨 |
 
 `.env.example` 참고. 로컬에서는 셸 환경변수로 넣는다(파일 자동 로딩 없음).
 

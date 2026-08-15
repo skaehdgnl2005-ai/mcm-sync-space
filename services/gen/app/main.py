@@ -34,7 +34,7 @@ from .schemas import (
 )
 
 logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO").upper(),
+    level=logging.INFO,
     format="%(asctime)s %(levelname)-7s %(name)s | %(message)s",
 )
 log = logging.getLogger("gen")
