@@ -1,0 +1,21 @@
+# Python (services/gen)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Node / Next.js (apps/web)
+node_modules/
+.next/
+out/
+.vercel/
+
+# 환경변수 — 절대 커밋하지 않는다
+.env
+.env.*
+!.env.example
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,5 @@
+# 03-mock-service-spec.md §1 — 이 3개 외 의존성 추가 금지.
+# 실엔진 투입 시 이미지 생성 SDK / supabase 클라이언트만 여기에 추가된다.
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
+pydantic==2.13.4
