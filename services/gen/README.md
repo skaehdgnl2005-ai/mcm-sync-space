@@ -25,25 +25,29 @@ MCM Sync-Space의 생성 서비스. **(사람 사진 + 확정된 상품 이미�
 - 에러 바디는 전부 `{"error_code": "...", "message": "..."}` 형태. 401은 `UNAUTHORIZED`, 없는 job은 404 `UNKNOWN`.
 - 이미지는 항상 URL. `data:` (base64) 값은 400으로 거절한다.
 
-요청 예시 (전체 필드):
+요청 예시 (계약 v2, 전체 필드):
 
 ```json
 {
-  "user_photo_url": "https://xxx.supabase.co/storage/v1/object/public/assets/uploads/s1/1.jpg",
+  "user_photo_url": "https://example.com/photo.jpg",
   "product": {
-    "id": "heritage-crossbody-cognac",
-    "name": "MCM 헤리티지 비세토스 크로스백",
+    "id": "MMRGATA04CO001",
+    "name": "나파 가죽 트림 비세토스 모노그램 캔버스 Aren 미디엄 크로스바디 백",
     "category": "crossbody",
-    "pattern": "visetos_cognac",
-    "material": "canvas_leather",
-    "ref_image_urls": ["https://xxx.supabase.co/.../products/heritage-crossbody-cognac/1.jpg"]
+    "material": "비세토스 모노그램 캔버스, 나파 가죽 트림, 코튼 트윌 안감",
+    "color_hardware": "꼬냑, 24K 골드 도금 브라스 플레이트",
+    "wear_position": "cross",
+    "ref_image_urls": ["https://example.com/p1.jpg"]
   },
-  "style_hints": { "city": "milano", "tpo": "cafe", "lighting": "natural" }
+  "style_hints": { "city": "milano", "purpose": "daily", "lighting": "natural" }
 }
 ```
 
-필수는 `user_photo_url`, `product.id`, `product.ref_image_urls`(1개 이상) 뿐이다.
-`style_hints`는 전체 생략·부분 생략·`null`·미정의 slug 전부 허용된다 (검증하지 않는다).
+- `product.id`는 **MCM SKU**, `material` / `color_hardware`는 DB 원문 텍스트다 (형식 검증 없음).
+- 필수는 `user_photo_url`, `product.id`, `product.wear_position`, `product.ref_image_urls`(1개 이상) 넷이다.
+- `wear_position`(예: `hand`·`shoulder`·`cross`·`back`·`neck`)과 `style_hints`의 **값 자체는 enum 검증하지 않는다** — 미정의 값도 통과한다.
+- `style_hints`는 전체 생략·부분 생략·`null` 전부 허용된다.
+- 알 수 없는 키(v1의 `pattern`, `style_hints.tpo` 등)는 에러 없이 무시된다. 하위호환 shim은 없다.
 
 ## 2. 로컬 실행
 
@@ -70,7 +74,7 @@ OpenAPI 문서는 `http://localhost:8000/docs`.
 ```bash
 GEN=http://localhost:8000          # 배포 후에는 Railway 도메인
 KEY=dev-local-key                  # = GEN_API_KEY
-BODY='{"user_photo_url":"https://example.com/photo.jpg","product":{"id":"heritage-crossbody-cognac","ref_image_urls":["https://example.com/p1.jpg"]},"style_hints":{"city":"milano","tpo":"cafe","lighting":"natural"}}'
+BODY='{"user_photo_url":"https://example.com/photo.jpg","product":{"id":"MMRGATA04CO001","category":"crossbody","material":"비세토스 모노그램 캔버스, 나파 가죽 트림","color_hardware":"꼬냑, 24K 골드 도금 브라스 플레이트","wear_position":"cross","ref_image_urls":["https://example.com/p1.jpg"]},"style_hints":{"city":"milano","purpose":"daily","lighting":"natural"}}'
 
 # 1) health — 키 없이 200 "ok"
 curl -si $GEN/health | head -1
@@ -94,12 +98,22 @@ sleep 6 && curl -s $GEN/generate/$JOB -H "X-API-Key: $KEY"
 # 6) 400 BAD_INPUT — user_photo_url 누락
 curl -s -w '\nHTTP %{http_code}\n' -X POST $GEN/generate \
   -H "X-API-Key: $KEY" -H 'Content-Type: application/json' \
-  -d '{"product":{"id":"p1","ref_image_urls":["https://example.com/p1.jpg"]}}'
+  -d '{"product":{"id":"MMRGATA04CO001","wear_position":"cross","ref_image_urls":["https://example.com/p1.jpg"]}}'
 
 # 7) 400 BAD_INPUT — data: base64 URL 금지
 curl -s -w '\nHTTP %{http_code}\n' -X POST $GEN/generate \
   -H "X-API-Key: $KEY" -H 'Content-Type: application/json' \
-  -d '{"user_photo_url":"data:image/jpeg;base64,/9j/4AAQ","product":{"id":"p1","ref_image_urls":["https://example.com/p1.jpg"]}}'
+  -d '{"user_photo_url":"data:image/jpeg;base64,/9j/4AAQ","product":{"id":"MMRGATA04CO001","wear_position":"cross","ref_image_urls":["https://example.com/p1.jpg"]}}'
+
+# 7-1) 400 BAD_INPUT — wear_position 누락 (v2 필수 필드. 422가 아니라 400이어야 한다)
+curl -s -w '\nHTTP %{http_code}\n' -X POST $GEN/generate \
+  -H "X-API-Key: $KEY" -H 'Content-Type: application/json' \
+  -d '{"user_photo_url":"https://example.com/photo.jpg","product":{"id":"MMRGATA04CO001","ref_image_urls":["https://example.com/p1.jpg"]}}'
+
+# 7-2) 202 — wear_position 미정의 값 + 알 수 없는 키(pattern, tpo)는 무시
+curl -s -w '\nHTTP %{http_code}\n' -X POST $GEN/generate \
+  -H "X-API-Key: $KEY" -H 'Content-Type: application/json' \
+  -d '{"user_photo_url":"https://example.com/photo.jpg","product":{"id":"MMRGATA04CO001","pattern":"visetos_cognac","wear_position":"elbow","ref_image_urls":["https://example.com/p1.jpg"]},"style_hints":{"tpo":"cafe"}}'
 
 # 8) 실패 시나리오 — failed + UPSTREAM_ERROR
 JOB=$(curl -s -X POST $GEN/generate -H "X-API-Key: $KEY" -H 'X-Mock-Scenario: fail' \

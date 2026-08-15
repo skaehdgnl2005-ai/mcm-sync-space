@@ -49,18 +49,26 @@ def validate_http_url(value: object) -> str:
 
 
 class Product(BaseModel):
-    """생성 대상 상품. 매칭은 B가 이미 끝냈고, A는 확정된 1개만 받는다."""
+    """생성 대상 상품. 매칭은 B가 이미 끝냈고, A는 확정된 1개만 받는다.
+
+    미정의 키(v1의 `pattern` 등)는 pydantic 기본 동작으로 조용히 무시된다.
+    """
 
     id: str
+    """MCM SKU (예: MMRGATA04CO001). 형식 검증은 하지 않는다."""
     name: Optional[str] = None
     category: Optional[str] = None
-    pattern: Optional[str] = None
     material: Optional[str] = None
+    """DB '소재 구성' 원문 텍스트."""
+    color_hardware: Optional[str] = None
+    """DB '컬러&하드웨어' 원문 텍스트."""
+    wear_position: str
+    """착용 위치 (hand·shoulder·cross·back·neck 등). 필수, 값 자체는 enum 검증하지 않는다."""
     ref_image_urls: list[str]
 
-    @field_validator("id")
+    @field_validator("id", "wear_position")
     @classmethod
-    def _id_must_be_present(cls, value: str) -> str:
+    def _must_be_present(cls, value: str) -> str:
         if not value.strip():
             raise ValueError("must be a non-empty string")
         return value.strip()
@@ -74,12 +82,15 @@ class Product(BaseModel):
 
 
 class StyleHints(BaseModel):
-    """선택 힌트. 미정의 slug·부분 생략·전체 생략 모두 통과시킨다 (§3 검증 규칙)."""
+    """선택 힌트. 미정의 slug·부분 생략·전체 생략 모두 통과시킨다 (§3 검증 규칙).
 
-    model_config = ConfigDict(extra="allow")
+    알 수 없는 키(v1의 `tpo` 등)는 에러 없이 버린다.
+    """
+
+    model_config = ConfigDict(extra="ignore")
 
     city: Optional[str] = None
-    tpo: Optional[str] = None
+    purpose: Optional[str] = None
     lighting: Optional[str] = None
 
 
