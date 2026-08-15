@@ -10,9 +10,18 @@ AI가 어울리는 MCM 가방을 매칭해 **고객 본인의 사진 위에 화�
 
 | 경로 | 담당 | 내용 |
 |---|---|---|
-| `services/gen/` | Dev A | 생성 서비스 (FastAPI / Railway). 현재 mock 엔진 동작 중 → [README](services/gen/README.md) |
+| `services/gen/` | Dev A | 생성 서비스 (FastAPI / Railway). **배포 완료, 현재 `mock` 엔진** → [README](services/gen/README.md) |
 | `apps/web/` | Dev B | 모바일 웹 + 매니저 뷰 (Next.js / Vercel). *미생성* |
 | `apps/web/public/demo/` | A 자산 + B 구현 | 데모 모드 정적 자산 (페르소나 6종) |
+
+### 배포 현황
+
+| | 값 |
+|---|---|
+| `GEN_BASE_URL` | `https://mcm-sync-space-production.up.railway.app` (실엔진 교체 후에도 불변) |
+| `GEN_API_KEY` | 레포에 두지 않는다. 별도 채널로 공유 (= Railway env `API_KEY`) |
+| 엔진 | `mock` — 5초 지연 후 `static/samples`의 세로 3:4 샘플 URL 반환 |
+| 계약 | v2 (`00-common.md` §5) — `product.wear_position` 필수, `style_hints.purpose` |
 
 ## 문서
 
