@@ -1,0 +1,26 @@
+# R2 본 베이크오프 — 승자·백업·Go/No-Go·§7 기입의 근거 (05 §3).
+#
+# 2모델 × 9셀(셀카3 × 상품3) × N2 = 36장. N2는 운영 정책 N=2와 동형이라
+# 결과가 곧 운영 예측치가 된다.
+#
+# 통제: 단일 pv(pv1 동결) · style_hints 미사용 · 동일 자산.
+#   style_hints를 여기서 쓰지 않는 이유 = R3 축④에서 lighting 유/무를 비교해야
+#   하는데, R2에서 섞어 버리면 그 비교의 기준선이 사라진다.
+
+exp_id: r2_bakeoff
+models: [gemini_nb, gpt_image]
+selfies: [s_casual, s_smart, s_formal]
+products: [MMRGATA04CO001, MMPGADC01BK001, MMKGATA03MT001]
+prompt_versions: [pv1]
+reps: 2
+concurrency: { global: 4, per_model: 2 }   # per_model 2 = 레이트리밋 방어 (05 §7)
+budget_cap_usd: 10
+
+# 러너 타임아웃은 **제품 SLA가 아니라 측정 도구**다.
+#   R1 실측에서 gpt_image가 43.3s·48.7s였다 — 기본값 50s(하드컷 55s)로 두면 여유가
+#   1.3초뿐이고, R1의 per_model 1보다 여기가 2라 더 밀린다. 그러면 느리지만 **성공했을**
+#   생성이 timeout 행으로 기록되고, 그게 05 §5의 "거부+오류율 > 20%" 부적격 게이트를
+#   때린다 = 우리 컷오프가 만든 인공물로 모델이 실격된다.
+#   55s 예산 준수 여부는 어차피 *측정된 지연*을 p95 > 40s 게이트로 판정한다. 50s에서
+#   자르면 그 분포가 절단돼 판정 자체가 불가능해진다. 넉넉히 재고 나중에 자른다.
+timeout_s: 90

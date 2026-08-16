@@ -1,0 +1,17 @@
+# R2b 스카프 1케이스 — 공통 문서 미결② 해소용 (05 §3, 01 §2).
+#
+# 2모델 × 1셀 × N2 = 4장. 러너에 override 문법이 없으므로 별도 소형 config다 (06 §3).
+#
+# 판정(05 §5): 승자 모델 출력 중 ≥1장이 c1·c3(자연스러운 목 배치)·c4·c5를 **동시**
+# pass하면 포함. **애매하면 제외** — 디폴트 편향은 제외다. `report`가 이 규칙을
+# 제안으로 출력하고, 확정은 사람이 한다.
+
+exp_id: r2b_scarf
+models: [gemini_nb, gpt_image]
+selfies: [s_smart]
+products: [MEFGAMM12CO001]
+prompt_versions: [pv1]
+reps: 2
+concurrency: { global: 2, per_model: 1 }
+budget_cap_usd: 1
+timeout_s: 90    # r2_bakeoff와 동일 근거 — 측정을 우리 컷오프로 절단하지 않는다

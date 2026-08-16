@@ -10,6 +10,10 @@ node_modules/
 out/
 .vercel/
 
+# 연구 도구 (research/) — 실인물 셀카·공식몰 이미지·대량 산출물은 미추적 (06 §1 N4)
+research/assets/
+research/experiments/
+
 # 환경변수 — 절대 커밋하지 않는다
 .env
 .env.*

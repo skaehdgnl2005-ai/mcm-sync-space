@@ -1,0 +1,66 @@
+# 상품 레지스트리 — **계약 필드명 그대로** (06 §3).
+#
+# 키 = SKU, 값의 필드명은 services/gen/app/schemas.py의 Product와 1:1이다.
+# 연구에서는 이 항목이, 실엔진에서는 payload.product.model_dump()가 **같은 형태**로
+# prompts.assemble()에 들어간다 → 승격 시 프롬프트 조립기 무수정 (06 §8).
+#
+# name·material·color_hardware는 `MCM 제품 세부 데이터.xlsx`
+# ('밀라노 에디션 제품 메타데이터' 시트)의 **원문 그대로**다. slug 변환·요약·번역
+# 금지 (01 §4 v2). 이 원문의 정확도가 c1(패턴·로고·하드웨어 톤 일치) 판정에 직결된다.
+#
+# ref_images: 공식몰 팩샷. 정면 1장 필수, 3/4 각도 1장 권장, 상한 3장 (05 부록 B §7.1).
+#   R2는 4 SKU 장수를 통일할 것 — 한 SKU만 레퍼런스가 많으면 그게 교란 변수가 된다.
+#   장수 비교는 R3 축①에서 models.yaml의 max_ref_images 변형으로 한다.
+#
+# size: **계약에 없는 유일한 필드**다 (schemas.py의 Product에는 없다).
+#   c2("DB 사이즈 대비 명백한 과대·과소")를 사람이 판정할 때 보라고 갤러리에만 띄운다.
+#   프롬프트에는 들어가지 않는다 — 실엔진 payload에 없는 정보를 연구에서만 주면
+#   R2 판정이 실서비스보다 낙관적으로 나온다. 넣을 가치는 R3에서 따로 검증한다.
+
+# No.08 — 무지 가죽 질감 + 골드 플레이트
+MMPGADC01BK001:
+  name: "바이에른 다이아몬드 카프스킨 레더 쇼퍼백"
+  category: 쇼퍼백
+  material: "카프스킨 레더, 다이아몬드 모노그램 코튼 안감"
+  color_hardware: "블랙, 24K 골드 도금 브라스 플레이트"
+  wear_position: shoulder      # DB ⑦ 합성 위치 = #어깨_착용, #손_파지 → 베이크오프는 shoulder로 고정
+  ref_images:                  # 1 = 정면 / 2 = 사선 3/4 (972x1286)
+    - assets/products/MMPGADC01BK001/1.jpg
+    - assets/products/MMPGADC01BK001/2.jpg
+  size: "약 15 × 45 × 36 cm, 핸들 스트랩 드롭: 22 cm"   # 계약 밖 (위 주석 참고)
+
+# No.09 — 베이크오프 최난도: 비세토스 시그니처 패턴 재현 + cross
+MMRGATA04CO001:
+  name: "나파 가죽 트림 비세토스 모노그램 캔버스 Aren 미디엄 크로스바디 백"
+  category: 크로스바디백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 코튼 트윌 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 플레이트"
+  wear_position: cross         # DB ⑦ = #크로스_착용
+  ref_images:                  # 1 = 정면 / 2 = 탑다운 상단 뷰, 지퍼·두께 (578x842)
+    - assets/products/MMRGATA04CO001/1.jpg
+    - assets/products/MMRGATA04CO001/2.jpg
+  size: "약 7 × 27 × 21 cm, 스트랩 길이: 85~151.5 cm"   # 계약 밖 (위 주석 참고)
+
+# No.10 — back(등) 위치. 정면 셀카에서의 스트랩 처리 관찰 대상
+#   ★ 4종 중 유일하게 하드웨어가 **실버**다. c1 fail 기준에 "골드·실버 뒤바뀜"이
+#     있으므로, 모델이 다른 3종처럼 골드로 그리는지가 이 SKU의 핵심 관찰 포인트다.
+MMKGATA03MT001:
+  name: "브라스 로고 플레이트 멀티컬러 나일론 Aren 노바 백팩"
+  category: 백팩
+  material: "바디: 폴리에스터 100%, 트림: 나일론 100%, 패브릭 안감"
+  color_hardware: "레드/네이비 멀티컬러, 다크 실버톤 코발트 메탈 플레이트"
+  wear_position: back          # DB ⑦ = #등_착용
+  ref_images:                  # 1 = 정면 / 2 = 후면 등판, 어깨 스트랩 (842x1146)
+    - assets/products/MMKGATA03MT001/1.jpg
+    - assets/products/MMKGATA03MT001/2.jpg
+  size: "약 9 × 31 × 43 cm, 스트랩 길이: 77~92 cm, 핸들 드롭: 6 cm"   # 계약 밖 (위 주석 참고)
+
+# No.12 — 스카프 1케이스. 포함 여부 = R2 판정(05 §5) → 공통 문서 미결② 해소
+MEFGAMM12CO001:
+  name: "페이즐리 프린트 비세토스 모티프 코튼 실크 스카프"
+  category: 스카프
+  material: "코튼 실크 혼방"
+  color_hardware: "꼬냑, 대비되는 그린 스트라이프 테두리"
+  wear_position: neck          # DB ⑦ = #목_착용
+  ref_images: [assets/products/MEFGAMM12CO001/1.jpg]
+  size: "약 57 × 57 × 0 cm"   # 계약 밖 (위 주석 참고)

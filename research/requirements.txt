@@ -1,0 +1,18 @@
+# 연구 도구 의존 — 06 §2.
+# research/ 전용이다. services/gen/requirements.txt는 R5 전까지 불변 (06 §14).
+# 상한 핀을 걸지 않는 이유: 이미지 모델 SDK는 해커톤 주기보다 빠르게 움직인다.
+# R0에서 설치한 버전을 05 부록 A에 적어 두는 편이 핀보다 실용적이다.
+
+# B1~B2 (러너·갤러리·리포트) — 이것만 있으면 --fake E2E가 돈다
+pyyaml>=6.0
+
+# B3 (prep_assets: 리사이즈 + EXIF 제거)
+pillow>=10.0
+
+# B4 (실프로바이더) — 키 발급 후에만 필요
+python-dotenv>=1.0
+httpx>=0.27
+google-genai>=1.0
+openai>=1.60
+
+# 컨틴전시(fal_flux)는 SDK 없이 httpx REST로 호출한다 — 추가 의존 없음 (06 §4)
