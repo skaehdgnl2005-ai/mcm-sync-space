@@ -126,3 +126,54 @@ def build(personas: list[Persona], *, log=print) -> None:
             encoding="utf-8",
         )
         log(f"{persona.persona_id}: photo {photo_size} · result {result_size} → {out}")
+
+
+# --- 선별 결과 (experiments/r6_personas/scores.json이 근거) ---------------------
+# 전항목 pass: p1 3/8(r2·r7·r8) · p2 5/8(r2·r5·r6·r7·r8) · p3 2/8(r4·r8).
+# 아래 1장씩은 그 안에서 고른 것이며, 고른 사유는 note에 남긴다.
+#
+# photo_crop: 셀카를 3:4로 자르는 박스. 결과물(1152x1536)의 프레이밍과 나란히 보고 정했다.
+#   s_smart  : 원본 1229x1536 → 좌우 균등 38px 잘라 1152x1536. 결과물과 거의 같은 프레이밍.
+#   s_casual : 원본 686x1536(0.447)은 3:4보다 훨씬 세로로 길다. 결과물은 모델이 좌우를
+#              바깥으로 확장(outpaint)한 것이라 **크롭으로 재현할 수 없다.** 얼굴을 반드시
+#              남겨야 하므로 위쪽 기준 686x915(머리~골반)로 자른다.
+#   s_formal : 원본 866x1496(0.579) → 위쪽 기준 866x1155(머리~허리).
+SELECTION = [
+    Persona(
+        persona_id="p1", city="milano", purpose="daily", color="cognac",
+        sku="MMRGATA04CO001", wear_position="cross",
+        selfie=RESEARCH_ROOT / "assets" / "selfies" / "s_smart.jpg",
+        photo_crop=(38, 0, 1190, 1536),
+        cell_id="gpt_base__s_smart__MMRGATA04CO001_R6__pv1__r8",
+        reason="팔짱 낀 스마트 데일리 실루엣과 브라운·크림 얼씨 뉴트럴 톤에, "
+               "골드 하드웨어를 얹은 꼬냑 비세토스 크로스바디가 그대로 포개집니다.",
+        note="전항목 pass 3장(r2·r7·r8) 중 r8 선별 — 8장 중 유일하게 스트랩이 "
+             "직조 웨빙 텍스처로 렌더됐다(나머지는 민가죽 위조, 05 부록 A-13 ⑧).",
+    ),
+    Persona(
+        persona_id="p2", city="milano", purpose="active", color="vivid",
+        sku="MMKGATA03MT001", wear_position="back",
+        selfie=RESEARCH_ROOT / "assets" / "selfies" / "s_casual.jpg",
+        photo_crop=(0, 0, 686, 915),
+        cell_id="gpt_base__s_casual__MMKGATA03MT001__pv1__r2",
+        reason="오버핏 스트리트의 블랙·핑크 배색과 실버 벨트 버클에 맞춰, "
+               "레드/네이비 멀티컬러 노바 백팩으로 양손을 비웠습니다.",
+        note="전항목 pass 5장 중 r2 선별 — 어깨 스트랩이 검정 웨빙(실물대로)이고 "
+             "전신이 신발까지 프레임에 남는 유일한 축이다.",
+    ),
+    Persona(
+        persona_id="p3", city="milano", purpose="commute", color="mono",
+        sku="MMPGADC01BK001", wear_position="shoulder",
+        selfie=RESEARCH_ROOT / "assets" / "selfies" / "s_formal.jpg",
+        photo_crop=(0, 0, 866, 1155),
+        cell_id="gpt_base__s_formal__MMPGADC01BK001__pv1__r8",
+        reason="모노톤 울 셋업의 슬림 테일러드 라인을 흩뜨리지 않는 각 잡힌 블랙 쇼퍼백 — "
+               "포인트는 24K 골드 플레이트 하나면 충분합니다.",
+        note="전항목 pass 2장(r4·r8) 중 r8 선별 — 어깨~옆구리 밀착이 가장 자연스럽고 "
+             "크기가 과대하지 않다.",
+    ),
+]
+
+
+if __name__ == "__main__":  # python genlab/prep_demo.py
+    build(SELECTION)
