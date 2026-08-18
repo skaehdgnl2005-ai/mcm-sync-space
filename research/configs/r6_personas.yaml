@@ -1,0 +1,76 @@
+# R6 데모 자산 — 페르소나 p1~p3 (05 §3 R6 / 00-common §9). **판정 실험이 아니라 납품이다.**
+#
+# 산출물: 페르소나별 **6항목 전부 pass 1장**. 우열 비교도, 축 판정도 하지 않는다.
+# 따라서 이 파일에는 사전 확정 판정선이 없다 — 대신 §4 채점 프로토콜을 그대로 쓴다
+# (이미지별 개별 채점 · 애매하면 fail · fail이면 note 1줄). 구두 일괄 판정 금지:
+# 지금까지 결론을 3회 뒤집은 원인이 정확히 그것이다 (부록 A-7 ③, A-9, A-10 ①).
+#
+# ── 설정 근거 (전부 기존 실측에서 유도. 이 실행은 새 축을 열지 않는다) ────────────
+# 모델   `gpt_base` = gpt-image-2 · quality=mid · 1152x1536 · ref 2장.
+#        · `gpt_high` 금지: 08-18 실측 성공률 1/4 · 성공분 114.3s. 축⑤는 판정 자체가
+#          불가능한 상태다. **축⑤는 폐기됐다(A-13 ⑥)** — 납품일에 검증 안 된 팔로 갈아타지 않는다.
+#        · `gemini_nb` 금지: 주 지표에서는 더 강하지만 출력이 ~1MP다. 무대 화면에
+#          띄울 자산으로 해상도가 미달이다. (품질 판단이 아니라 용도 판단이다.)
+#        · 1152x1536은 **정확히 3:4** — result.jpg는 리사이즈 없이 그대로 납품된다.
+# pv     `pv1`. pv1c는 기각(A-10 ①), pv1d는 표본 결손으로 **미판정-기각**이고 정지 규칙이
+#        발동해 cross 프롬프트 축은 종결됐다(A-13 ⑤). **산출물 ④ 동결값이 pv2 = pv1이다.**
+#        **검증되지 않은 프롬프트로 납품물을 만들지 않는다.**
+# reps   8. 위치별 장당 성공률 p(A-9 ④)에서 8장 중 1장 이상 전항목 pass 확률:
+#          shoulder p=0.75 → 99.998% / back(ref 2장) p≈1.0 → ~100%
+#          cross(틈 없는 자세) p=8/8 관측 → 하한을 보수적으로 0.5로 깔아도 99.6%
+#        판정 실험이 아니므로 N은 **통계력이 아니라 뽑기 여유**로 정한다.
+# timeout_s 120. 러너 하드컷은 +5s이므로 실질 125s.
+#        ★ 95s로 자르면 안 된다: 08-18 오전 실측에서 성공 14건이 전원 61.9~97.9s였고
+#          90s 컷을 쓴 r3g는 18시도 중 6건이 timeout으로 증발했다(33%). R6는 사전
+#          생성이라 **60초 계약의 적용을 받지 않는다** — 여기서 지연은 비용이지 결함이 아니다.
+# style_hints 미사용. pv1의 style 슬롯은 lighting만 받는데(prompts._style_directive),
+#        축④는 R3에서 판정되지 않았다. 납품 실행에 미검증 변수를 넣지 않는다.
+#        페르소나의 도시·무드 태그는 **meta.json에만** 들어가고 생성에는 관여하지 않는다.
+#
+# ── 페르소나 ↔ 셀·SKU (00-common §9 표) ──────────────────────────────────────
+# | 페르소나 | 태그              | 셀카      | SKU                | wear_position |
+# | p1       | milano+daily+cognac| s_smart  | MMRGATA04CO001_R6  | cross         |
+# | p2       | milano+active+vivid| s_casual | MMKGATA03MT001     | back          |
+# | p3       | milano+commute+mono| s_formal | MMPGADC01BK001     | shoulder      |
+#
+# p1 = s_smart인 이유(**이 실행에서 가장 중요한 한 줄**): cross는 모델이 깨진 게 아니라
+#   **팔–몸통 틈이 보이는 자세에서만** 깨진다 — 틈 없는 자세 c3 8/8 vs 틈 있는 자세 1/16
+#   (A-10 ⑤). s_smart는 팔짱이라 틈이 없고 cross 6/6이다. 유일한 여성 셀카 s_casual은
+#   정면·직립·팔 내림 = 실패 자세 그 자체(1/10)라 p1에 쓸 수 없다.
+#   → **자세가 페르소나 성별보다 우선한다.** §9 표의 인물 묘사(p1 여성 / p2 남성)와
+#     어긋나는 부분은 B에게 통지하고 사후 승인받는다(페르소나 사진 선정은 원래 공동 결정).
+#     그 외 태그 속성은 오히려 잘 맞는다: s_smart = 얼씨 뉴트럴(브라운 플란넬·크림) +
+#     스마트 데일리, s_casual = 오버핏 스트릿 + 핑크/블랙 배색 + 실외 콘크리트 배경.
+# p2 = s_casual: back은 자세 의존성이 없다(cross 결함은 back에 적용되지 않는다).
+#   ref 2장(정면 + 후면 등판컷)이 필수 조건이고 MMKGATA03MT001이 이미 충족한다 — 1/6 → 4/4.
+# p3 = s_formal: 셋업 포멀·모노톤 태그와 사진이 그대로 일치한다. shoulder는 p=0.75로 최고.
+#
+# MMRGATA04CO001_R6은 No.09와 **레퍼런스 1장만** 다른 별 키다 (products.yaml 하단 주석).
+#   보조컷을 탑다운 → 웨빙 스트랩 클로즈업으로 교체했다. r3f·r3g 산출물에서 스트랩이
+#   전부 민가죽으로 위조됐기 때문이다(실물은 헤링본 웨빙). 부록 A-13.
+
+# ── 실행 절차 (곱집합 전개뿐이므로 대각선은 --only로 걷는다) ──────────────────
+#   이 config를 필터 없이 돌리면 3×3 = 9셀 × 8 = **72장($5.76)**이 전개된다.
+#   실제로 필요한 것은 대각선 3셀 × 8 = **24장($1.92)**뿐이다.
+#   budget_cap_usd=3.00은 그 차이를 **구조로** 막는다 — 필터를 빠뜨린 실행은 견적
+#   $5.76 > cap에서 거부된다(F7). 반대로 페르소나 1건(=$0.64)이나 reps 증량은 넉넉히 통과한다.
+#
+#   python -m genlab run configs/r6_personas.yaml --dry-run \
+#       --only selfie=s_smart  --only product=MMRGATA04CO001_R6
+#   python -m genlab run configs/r6_personas.yaml --resume \
+#       --only selfie=s_smart  --only product=MMRGATA04CO001_R6      # p1
+#   python -m genlab run configs/r6_personas.yaml --resume \
+#       --only selfie=s_casual --only product=MMKGATA03MT001         # p2
+#   python -m genlab run configs/r6_personas.yaml --resume \
+#       --only selfie=s_formal --only product=MMPGADC01BK001         # p3
+
+exp_id: r6_personas
+models: [gpt_base]
+selfies: [s_smart, s_casual, s_formal]
+products: [MMRGATA04CO001_R6, MMKGATA03MT001, MMPGADC01BK001]
+prompt_versions: [pv1]
+reps: 8
+concurrency: { global: 2, per_model: 2 }   # R2·S4a와 같은 부하. 회선이 완전 정상은 아니므로
+                                           #   (프로브 130~170ms, 정상 20~50ms) 올리지 않는다.
+budget_cap_usd: 3.00                       # 대각선 견적 1.92 / 필터 누락 시 5.76 → 거부
+timeout_s: 120

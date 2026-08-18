@@ -64,3 +64,29 @@ MEFGAMM12CO001:
   wear_position: neck          # DB ⑦ = #목_착용
   ref_images: [assets/products/MEFGAMM12CO001/1.jpg]
   size: "약 57 × 57 × 0 cm"   # 계약 밖 (위 주석 참고)
+
+# --- R6 데모 자산 전용 엔트리 (2026-08-18) ------------------------------------
+# No.09와 **같은 SKU·같은 계약 필드**이고 `ref_images`만 다르다. 별도 키로 두는 이유는
+# 하나뿐이다: 05 부록 A-12가 `r3g_cross_pv1d`·`r3h_quality`의 **--resume 재개를 계획**하고
+# 있는데, 위 MMRGATA04CO001의 ref 목록을 제자리에서 고치면 재개분이 기존 10장과 다른
+# 레퍼런스로 생성되어 그 실험의 통제가 조용히 깨진다. 별 키면 그 위험이 0이다.
+#
+# 차이: 보조컷을 2.jpg(탑다운 — 스트랩이 안 보인다) → **3.jpg(웨빙 스트랩 클로즈업)**으로 교체.
+#   `id` 필드는 contract_dict()에서 이 키가 그대로 들어가지만 **프롬프트에는 쓰이지 않는다**
+#   (prompts._product_facts는 name/material/color_hardware만 읽는다). 즉 생성 조건은
+#   MMRGATA04CO001과 레퍼런스 1장 말고는 완전히 동일하다.
+#
+# 근거 (05 부록 A-13): r3f·r3g의 cross 산출물에서 스트랩이 **전부 민가죽으로 위조**됐다.
+#   실물은 헤링본 웨빙(코냑)이다. 정면 팩샷(1.jpg)에 웨빙이 보이기는 하나 가방에 가려 짧게
+#   끊긴 구간뿐이라 모델이 근거로 삼지 못했다. `back`에서 같은 실패(스트랩 색 지어내기)가
+#   후면 등판컷 한 장으로 1/6 → 4/4로 뒤집힌 선례(A-9 ②)를 그대로 적용한 것이다.
+MMRGATA04CO001_R6:
+  name: "나파 가죽 트림 비세토스 모노그램 캔버스 Aren 미디엄 크로스바디 백"
+  category: 크로스바디백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 코튼 트윌 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 플레이트"
+  wear_position: cross
+  ref_images:                  # 1 = 정면(필수) / 3 = 웨빙 스트랩·숄더패드·스냅훅 클로즈업
+    - assets/products/MMRGATA04CO001/1.jpg
+    - assets/products/MMRGATA04CO001/3.jpg
+  size: "약 7 × 27 × 21 cm, 스트랩 길이: 85~151.5 cm"   # 계약 밖
