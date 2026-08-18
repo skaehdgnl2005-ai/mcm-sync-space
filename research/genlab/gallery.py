@@ -26,7 +26,12 @@ GALLERY_NAME = "gallery.html"
 CHECKLIST: tuple[tuple[str, str, str], ...] = (
     ("c1", "패턴·로고·하드웨어 톤", "비세토스 반복 단위 왜곡 / 로고 플레이트 문자 뭉개짐 / 골드·실버 뒤바뀜 / 컬러 이탈"),
     ("c2", "크기·착용 비율", "DB 사이즈 대비 명백한 과대·과소 (미디엄 크로스바디가 토트 크기 등)"),
-    ("c3", "지정 wear_position", "지정 위치가 아닌 곳에 합성 / back인데 스트랩 표현조차 없음"),
+    # c3는 2026-08-16에 개정됐다 (05 §4 / 부록 A-7 ④). 원래 기준이 back의 스트랩 누락만
+    # 적고 있어 cross·shoulder를 판정할 규칙이 없었고, 같은 결함이 팔마다 다르게 판정되는
+    # 사고가 실제로 났다. 툴팁이 채점 중에 사람이 읽는 유일한 기준이므로 여기가 곧 규칙이다.
+    ("c3", "지정 wear_position",
+     "지정 위치가 아닌 곳에 합성 / back인데 스트랩 표현조차 없음 / "
+     "cross·shoulder인데 ⓐ어깨~가방 스트랩 구간 누락 ⓑ스트랩이 팔·몸통 관통 ⓒ좌우가 지시와 반대"),
     ("c4", "인물 보존", "얼굴 왜곡·동일성 훼손 / 손가락 왜곡 / 의상 임의 변형"),
     ("c5", "조명·그림자 + 배경", "배경 변형 / 그림자 없음·방향 불일치로 제품이 '붙인 티'"),
     ("c6", "화보 톤", "광고 화보로 못 쓸 어색함 (주관 — 보수 판정)"),
@@ -166,6 +171,14 @@ _TEMPLATE = """<!doctype html>
           border-radius: 8px; padding: 8px; }
   .card.needs-note { border-color: var(--fail); }
   .card.done { border-color: #34694f; }
+  /* 미판정(값 없음)과 fail(값 false)은 둘 다 '빈 체크박스'로 보인다. 이 구분이 화면에
+     없으면 채점자가 c3를 건너뛴 것과 fail로 찍은 것이 섞인다 — 실제로 S4a/S4b에서
+     10장이 그렇게 유실됐다 (05 부록 A-7 ②'). 상태를 눈에 보이게 만든다. */
+  .card.partial { border-color: var(--warn); }
+  .checks label.unjudged { color: var(--warn); font-weight: 600; }
+  .checks label.unjudged::after { content: "?"; }
+  .checks label.isfail { color: var(--fail); text-decoration: line-through; }
+  .partialbadge { font-size: 10px; color: var(--warn); margin-top: 4px; display: block; }
   .shot { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px;
           background: #000; cursor: zoom-in; display: block; }
   .placeholder { width: 100%; aspect-ratio: 3/4; border-radius: 6px; display: flex;
@@ -218,6 +231,8 @@ _TEMPLATE = """<!doctype html>
     Import <input type="file" id="import" accept="application/json,.json"></label>
 </header>
 
+<div id="vary" style="padding:8px 14px; font-size:12px; border-bottom:1px solid var(--line);
+     background:#191b22"></div>
 <div class="wrap"><table id="grid"></table></div>
 
 <dialog id="lightbox">
@@ -266,28 +281,46 @@ document.getElementById('expid').textContent = DATA.exp_id;
 function refreshHeader() {
   const scored = scorable.filter(i => isScored(load(i.cell_id))).length;
   const missing = scorable.filter(i => needsNote(load(i.cell_id))).length;
+  // '하다 만' 이미지 = 일부만 찍힌 것. report가 통째로 집계에서 빼므로 조용히 유실된다.
+  const partial = scorable.filter(i => {
+    const s = load(i.cell_id), blanks = IDS.filter(c => s[c] === undefined).length;
+    return blanks > 0 && blanks < IDS.length;
+  }).length;
   document.getElementById('progress').textContent =
     `채점 ${scored}/${scorable.length}` + (DATA.items.length > scorable.length
       ? ` · 생성 실패 ${DATA.items.length - scorable.length}건` : '');
   // 05 §4: note 한 줄은 의무다 (§7 스펙·R4 실패 분류의 원천 데이터).
-  document.getElementById('warn').textContent = missing ? `⚠ fail인데 note 없음 ${missing}건` : '';
-  document.getElementById('warn').style.color = missing ? 'var(--fail)' : '';
+  const notes = [];
+  if (partial) notes.push(`⚠ 일부만 판정된 이미지 ${partial}건 — 집계에서 제외된다`);
+  if (missing) notes.push(`⚠ fail인데 note 없음 ${missing}건`);
+  document.getElementById('warn').textContent = notes.join(' · ');
+  document.getElementById('warn').style.color = notes.length ? 'var(--warn)' : '';
 }
 
 function checkboxes(item, prefix) {
   const score = load(item.cell_id);
   return DATA.checklist.map((c, n) => {
-    const on = score[c.id] === true ? 'checked' : '';
-    return `<label title="fail 기준: ${c.fail}"><input type="checkbox" data-cell="${item.cell_id}"
+    const v = score[c.id];
+    const on = v === true ? 'checked' : '';
+    // 미판정(undefined)과 fail(false)을 시각적으로 가른다. 둘 다 체크박스는 비어 있다.
+    const cls = v === undefined ? 'unjudged' : (v === false ? 'isfail' : '');
+    const hint = v === undefined ? ' — 아직 판정하지 않음 (한 번 클릭=pass, 두 번=fail)' : '';
+    return `<label class="${cls}" title="fail 기준: ${c.fail}${hint}"><input type="checkbox" data-cell="${item.cell_id}"
       data-check="${c.id}" id="${prefix}-${item.cell_id}-${c.id}" ${on}>${c.id}
       <span class="muted">${n + 1}</span></label>`;
   }).join('');
+
+const unjudged = item => IDS.filter(c => load(item.cell_id)[c] === undefined);
 }
 
 function cardHtml(item) {
   if (!item) return '<div class="card muted" style="opacity:.4">—</div>';
   const score = load(item.cell_id);
-  const cls = ['card', isScored(score) ? 'done' : '', needsNote(score) ? 'needs-note' : ''].join(' ');
+  const blanks = item.status === 'ok' ? IDS.filter(c => score[c] === undefined) : [];
+  // 한 항목이라도 손댔는데 남은 게 있으면 '하다 만' 상태다 — 아예 안 건드린 카드와 구분한다.
+  const partial = blanks.length > 0 && blanks.length < IDS.length;
+  const cls = ['card', isScored(score) ? 'done' : '', partial ? 'partial' : '',
+               needsNote(score) ? 'needs-note' : ''].join(' ');
   const shot = item.status === 'ok' && item.image
     ? `<img class="shot" src="${item.image}" loading="lazy" alt="${item.cell_id}" data-open="${item.cell_id}">`
     : `<div class="placeholder"><div><b>${item.status}</b><br>${item.error_message || ''}</div></div>`;
@@ -295,10 +328,13 @@ function cardHtml(item) {
       <div class="checks">${checkboxes(item, 'g')}</div>
       <textarea class="note" rows="1" data-note="${item.cell_id}"
         placeholder="fail 사유 한 줄">${(score.note || '').replace(/</g, '&lt;')}</textarea>
-      <button class="allpass" data-allpass="${item.cell_id}">6/6 전항목 pass</button>` : '';
+      <button class="allpass" data-allpass="${item.cell_id}">6/6 전항목 pass</button>
+      ${partial ? `<span class="partialbadge">⚠ 미판정 ${blanks.join(', ')} — 집계에서 제외된다</span>` : ''}` : '';
   return `<div class="${cls}" id="card-${item.cell_id}">
       ${shot}
-      <div class="meta"><span>${item.model} · ${item.pv} · r${item.rep}</span>
+      <div class="meta"><span>${VARIES.pv && !VARIES.model
+          ? '<b>' + item.pv + '</b> · r' + item.rep
+          : item.model + ' · ' + item.pv + ' · r' + item.rep}</span>
         <span class="badge ${item.status}">${item.status === 'ok' ? item.latency_ms + 'ms' : item.status}</span></div>
       ${body}</div>`;
 }
@@ -308,9 +344,33 @@ function refreshCard(id) {
   if (el) el.outerHTML = cardHtml(byId[id]);
 }
 
+// 이 실험에서 **실제로 변하는** 열 차원을 찾는다.
+// 안 변하는 것(R3에서는 model)을 크게 쓰면 채점자에게 "전부 똑같아 보인다"는 인상을 준다.
+// 축별 1:1 실험은 원래 한 가지만 빼고 전부 고정하므로, 그 한 가지를 눈에 띄게 해야 한다.
+const VARIES = {
+  model: new Set(DATA.columns.map(c => c.model)).size > 1,
+  pv: new Set(DATA.columns.map(c => c.pv)).size > 1,
+};
+function colLabel(c) {
+  const big = [], small = [];
+  (VARIES.model ? big : small).push(c.model);
+  (VARIES.pv ? big : small).push(c.pv);
+  if (!big.length) big.push(c.model);        // 둘 다 고정이면 model을 표제로
+  small.push('r' + c.rep);
+  return `${big.join(' · ')}<br><span class="muted">${small.join(' · ')}</span>`;
+}
+function varyBanner() {
+  const dims = Object.keys(VARIES).filter(k => VARIES[k]);
+  if (!dims.length) return '';
+  const vals = d => [...new Set(DATA.columns.map(c => c[d]))].join(' vs ');
+  return '이 실험에서 다른 것 → ' + dims.map(d => `<b>${d}</b>: ${vals(d)}`).join(' · ')
+       + ` <span class="muted">(나머지는 전부 고정 — 같은 인물·같은 상품이 반복되는 것이 정상이다)</span>`;
+}
+
 function render() {
+  document.getElementById('vary').innerHTML = varyBanner();
   const head = ['<tr><th></th>'].concat(
-    DATA.columns.map(c => `<th>${c.model}<br><span class="muted">${c.pv} · r${c.rep}</span></th>`)
+    DATA.columns.map(c => `<th>${colLabel(c)}</th>`)
   ).join('') + '</tr>';
   const body = DATA.rows.map(row => {
     const refs = (row.refs || []).map(src => `<img src="${src}" alt="ref">`).join('');

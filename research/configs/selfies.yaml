@@ -34,6 +34,22 @@ s_smart:
     ⚠ 스튜디오 룩북성 촬영물 — 실사용자 셀카 대비 05 §7 리스크 1(정책 거부)이
     낙관적으로 측정될 수 있다. §7.2 기입 시 이 편향을 감안할 것.
 
+s_smart_lowres:
+  file: assets/selfies/s_smart_lowres.jpg
+  formality: smart_daily
+  note: >-
+    380×1244 (구 s_smart 원본 `_originals/selfies/s_smart.png`를 그대로 JPEG 정규화 —
+    **업스케일 없음**, 알파→흰색, 매직바이트 JPEG 확인). s_smart와 같은 인물·같은 슬롯의
+    저해상도 판이다.
+    ⚠ **난도 셀 전용 — 포멀도 축이 아니라 '입력 해상도' 축이다.** R2 매트릭스에 넣지 말 것
+    (s_smart와 인물이 겹쳐 셀 통과 수의 의미가 깨진다).
+    존재 이유: 긴 변 1244px로 **00-common §7.2의 '최소 해상도 긴 변 1024px 이상'을 통과하는데도**
+    폭이 380px이라 얼굴이 ~45px다. 즉 §7.2의 하한 지표가 긴 변이어야 하는지 짧은 변이어야
+    하는지를 가르는 반례 후보이며, `prep_assets.MIN_SHORT_EDGE_WARN`(768)이 코드에만 있고
+    §7.2에는 없는 가드의 실측 근거가 된다.
+    ⚠ 배경이 순백이라 **c5(원본 배경 유지)는 공짜 통과**다 — 이 셀로 c5를 논하지 말 것.
+    ⚠ 역광·얼굴 가림은 이 자산으로 검증되지 **않는다** (§7.2 금기 3종 중 해상도 축만 건드린다).
+
 s_formal:
   file: assets/selfies/s_formal.jpg
   formality: formal

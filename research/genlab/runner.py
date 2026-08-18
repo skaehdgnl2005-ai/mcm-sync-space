@@ -612,10 +612,51 @@ def format_estimate(est: Estimate, config: ExperimentConfig, label: str) -> str:
     return "\n".join(lines)
 
 
+NETWORK_PROBE_URL = "https://www.google.com/generate_204"
+"""본문이 없는 204 응답 — 대역폭이 아니라 **회선 왕복 자체**를 잰다."""
+
+NETWORK_WARN_MS = 800
+"""이보다 느리면 경고. 정상은 20~50ms다.
+
+근거(부록 A-10 ⓪): 회선이 열화된 상태에서 실험을 돌려 timeout 7건·연결오류 5건을 내고,
+그 지연 측정치를 **프로바이더 부하로 오인해 결론까지 썼다.** 어댑터의 `latency_ms`는
+입력 ~600KB 업로드 + 결과 ~300KB 다운로드를 포함한 벽시계라, 회선이 나쁘면 그대로 오염된다.
+생성 지연을 재는 실험에서 이 구별이 없으면 측정 자체가 성립하지 않는다."""
+
+
+def probe_network(*, log=print) -> Optional[float]:
+    """생성 전 회선 왕복 점검. **막지는 않는다** — 판단은 사람이 한다.
+
+    실패해도 조용히 넘어간다: 프로브 자체가 실험을 막아서는 안 되고, 오프라인
+    환경에서 `--fake`를 돌리는 경우도 있다.
+    """
+    try:
+        import urllib.request
+
+        started = datetime.now(timezone.utc)
+        urllib.request.urlopen(NETWORK_PROBE_URL, timeout=5).read()
+        rtt_ms = (datetime.now(timezone.utc) - started).total_seconds() * 1000
+    except Exception:  # noqa: BLE001 — 프로브 실패는 데이터일 뿐 오류가 아니다
+        log("!! 네트워크 사전점검 실패 — 회선을 확인하라 (지연 측정이 무의미해진다)")
+        return None
+
+    if rtt_ms > NETWORK_WARN_MS:
+        log(
+            f"!! 네트워크 사전점검: 본문 없는 204 응답에 {rtt_ms:.0f}ms "
+            f"(정상 20~50ms). **회선이 열화됐다.**\n"
+            "   이 상태로 돌리면 latency_ms가 생성 시간이 아니라 회선 상태를 잰다 "
+            "— 지연 판정은 폐기해야 하고 timeout이 다발한다 (부록 A-10 ⓪).\n"
+            "   품질 채점만 목적이면 진행해도 되지만, 지연이 산출물이면 중단하라."
+        )
+    return rtt_ms
+
+
 def run(config_path: Path, opts: RunOptions, *, log=print) -> Optional[RunSummary]:
     config = load_experiment(config_path)
     reg = load_registries()
     validate(config, reg, fake=opts.fake)
+    if not opts.fake:
+        probe_network(log=log)
 
     cells = apply_only(expand(config), opts.only)
     if not cells:

@@ -58,6 +58,78 @@ gpt_ref2:
                                  #   R2 실측 입력 2683~3301 tok 기준 +$0.01 미만이라 0.08 유지.
   enabled: true
 
+# --- S4a 설정 최적화 4팔 (R3 착수 전) — "60초 계약 안에서 품질 최대" ------------
+#   목적: R5에 이관할 **실엔진 설정 1조합**의 확정. 승자 모델은 스폰서 제약으로
+#   이미 gpt-image-2로 확정됐으므로(부록 A) 여기서 비교하는 것은 모델이 아니라 **설정**이다.
+#
+#   전 팔 공통: model_id·quality·prompt(pv1)·max_ref_images가 동일하고, **한 팔당 한
+#   파라미터만** 다르다 (07 §4 "축별 독립 1:1, full factorial 금지").
+#
+#   ⚠ max_ref_images를 R2의 1이 아니라 **2로 통일**한 이유: R2c로 §7.1이 "정면 1장 +
+#     보조컷 1장 권장"으로 확정됐으므로(부록 A-3), R5 실엔진이 실제로 받게 될 상태는
+#     ref 2장이다. 이 실험의 산출물이 "이관할 설정"인 이상 기준선도 그 상태여야 한다.
+#     덤: gpt_base는 r2c의 gpt_ref2(n=6, p50 39.1s/p95 42.8s)와 설정이 완전히 같아
+#     **세션 간 재현성 대조군**으로도 쓰인다.
+#
+#   ⚠ 어댑터는 quality·size만 pop하고 나머지 params를 images.edit에 그대로 통과시킨다
+#     (openai_images.py). 따라서 input_fidelity·n은 **코드 수정 없이** 이 표만으로 만들어진다.
+
+gpt_base:
+  adapter: openai_images
+  model_id: "gpt-image-2"
+  params: { quality: mid, size: "1152x1536", max_ref_images: 2 }
+  cost_per_image_usd: 0.08
+  enabled: true
+
+gpt_s912:
+  adapter: openai_images
+  model_id: "gpt-image-2"
+  params: { quality: mid, size: "912x1216", max_ref_images: 2 }
+                                 # 정확히 3:4 · 각 변 16배수(57×76) · 1.11MP(65.5만~829만 범위)
+                                 #   = 부록 A-2가 "여유 부족 시 남겨 둔 카드"로 명시한 값.
+                                 #   화소가 1152x1536 대비 62.7%라 출력 토큰(=지연·단가)이 준다.
+  cost_per_image_usd: 0.08       # 실제로는 더 쌀 것이다(출력 토큰 감소). **과대 추정을 유지한다** —
+                                 #   과소 추정은 예산 가드를 무력화한다(gemini_nb 항목과 같은 규율).
+                                 #   실측 토큰은 이 실험의 provider_meta.usage로 회수한다.
+  enabled: true
+
+# ✗ 사장(死藏) — 실행 불가로 확정. 지우지 않고 남기는 이유는 "왜 안 했나"가 기록이기 때문이다.
+gpt_fid:
+  adapter: openai_images
+  model_id: "gpt-image-2"
+  params: { quality: mid, size: "1152x1536", max_ref_images: 2, input_fidelity: high }
+  cost_per_image_usd: 0.08
+  enabled: false                 # ★ 2026-08-16 프로브 1콜로 반증됨 — **파라미터 자체가 미지원**이다.
+                                 #   400 invalid_input_fidelity_model:
+                                 #     "The model 'gpt-image-2' does not support the
+                                 #      'input_fidelity' parameter."
+                                 #   SDK 시그니처에는 있다(images.edit의 정식 인자) — gpt-image-1
+                                 #   전용이다. 즉 위 gpt_image 항목의 주석("gpt-image-2는 입력을
+                                 #   항상 high fidelity로 처리")이 **맞았다**. 명시할 대상이 아니라
+                                 #   기본 동작이라 명시 자체가 거부된다.
+                                 #   → c1(로고)·c4(얼굴)의 입력 충실도는 **노브가 아니다.** 이 축은
+                                 #      닫혔고, 남은 수단은 입력 해상도(§7.1/§7.2)와 프롬프트뿐이다.
+                                 #   부수 검증: 이 400이 `refused`가 아니라 `error`로 분류됐다 —
+                                 #     openai_images.py의 _REFUSAL_MARKERS가 설정 오류를 정책 거부로
+                                 #     둔갑시키지 않는다는 것이 실제 400으로 확인됐다 (게이트 ① 오염 없음).
+
+gpt_n2:
+  adapter: openai_images
+  model_id: "gpt-image-2"
+  params: { quality: mid, size: "1152x1536", max_ref_images: 2, n: 2 }
+                                 # 단일 호출로 2장. **어댑터는 data[0]만 읽으므로 2번째 장은
+                                 #   버려진다** — 이 팔은 품질 팔이 아니라 **지연 측정 팔**이다.
+                                 #   답하려는 질문(R4 N 정책의 근간): 60초 계약 안에서
+                                 #     (a) 2병렬 호출 first-ok = min(t1,t2)  [현행 계획]
+                                 #     (b) 단일 n=2 호출 = t_n2              [이 팔]
+                                 #   어느 쪽이 빠른가. (a)가 이기면 계획 유지, (b)가 이기면
+                                 #   R5 엔진이 호출 1회로 단순해진다. 실사용하려면 어댑터가
+                                 #   data[1]도 읽도록 고쳐야 하며, 그건 R4/R5 결정 후다.
+  cost_per_image_usd: 0.16       # ★ n=2는 **2장분 과금**인데 러너의 견적은 '호출당'이다.
+                                 #   여기에 0.08을 쓰면 견적이 정확히 절반으로 나와
+                                 #   budget_cap 가드가 무력해진다. 2배로 못 박는다.
+  enabled: true
+
 # --- 컨틴전시: R1 전멸(G1) 시에만 enabled 전환 (05 §3) -----------------------
 flux_kontext:
   adapter: fal_flux              # 키 미보유 — 발동 시 httpx REST로 작성 (06 §4)
@@ -66,10 +138,23 @@ flux_kontext:
   cost_per_image_usd: 0.06
   enabled: false
 
-# --- R3 축⑤ (품질 티어) 발동 시 주석 해제 — 승자가 gpt 계열일 때만 ----------
-# gpt_image_high:
-#   adapter: openai_images
-#   model_id: "<gpt_image와 동일>"
-#   params: { quality: high }
-#   cost_per_image_usd: 0.19
-#   enabled: true
+# --- R3 축⑤ (품질 티어) — 2026-08-17 발동. 승자가 gpt 계열이라 부활한 축이다 -----
+#   gpt_base와 **quality만** 다르다 (mid → high). size·ref 장수·model_id 동일.
+#
+#   왜 지금인가: cross 스트랩 결함(부록 A-9 ①)에 프롬프트가 두 번 실패했고(축⑥),
+#   두 벤더가 같은 방식으로 실패한다 — **모델 능력의 한계**일 가능성이 높다.
+#   스트랩은 얇은 구조물이라 품질 티어가 이를 바꿀 여지가 실재한다. 축⑤는 어차피
+#   R3 예정 축이므로 추가 스코프가 아니며, 실패 셀에서 돌리면 두 질문에 동시에 답한다.
+#
+#   ⚠ 품질이 이겨도 **지연이 계약을 넘기면 채택 불가**다 (r3h config 헤더의 사전 확정선).
+#     high는 출력 토큰이 늘어 생성이 느려질 것이 거의 확실하고, 60초 계약의 여유는
+#     이미 얇다(부록 A-10 ①②).
+gpt_high:
+  adapter: openai_images
+  model_id: "gpt-image-2"
+  params: { quality: high, size: "1152x1536", max_ref_images: 2 }
+  cost_per_image_usd: 0.20       # 05 §6 가정은 ~$0.19. mid 실측(출력 1629 tok ≈ $0.072)의
+                                 #   3배를 잡으면 출력 ~$0.147 + 입력 ~$0.023 ≈ $0.17.
+                                 #   **과대 추정을 유지**해 0.20 (gemini_nb 항목과 같은 규율).
+                                 #   실측 토큰은 provider_meta.usage로 회수해 갱신한다.
+  enabled: true
