@@ -5,3 +5,6 @@ __pycache__/
 .env
 .env.*
 !.env.example
+
+# STORAGE=local 산출물 — 런타임 생성물이라 커밋하지 않는다 (휘발성 카드, README §6)
+static/generated/
