@@ -161,3 +161,24 @@ gpt_high:
                                  #   **과대 추정을 유지**해 0.20 (gemini_nb 항목과 같은 규율).
                                  #   실측 토큰은 provider_meta.usage로 회수해 갱신한다.
   enabled: true
+
+# --- R7 축 (gemini 레퍼런스 장수) — 2026-08-19. 주모델 전환 검증용 ---------------
+#   `gemini_nb`와 **max_ref_images만** 다르다(1 → 2). model_id·aspect_ratio·image_size 동일.
+#   대조군은 새로 만들지 않는다 — `gemini_nb`가 곧 ref1 팔이다(그 항목의 1은 R1·R2 조건 고정).
+#
+#   왜 필요한가: gemini의 실측은 **전부 ref 1장**이다(R2 18장). 그런데 00-common §7.1은
+#   이제 cross·shoulder·back에 **스트랩 선명 컷 1장 필수**를 요구하고 B가 그 기준으로
+#   수집 중이다. 즉 라이브 엔진이 실제로 받게 될 상태는 **ref 2장**인데 그 성적이 없다.
+#   특히 gemini의 유일한 약점이 shoulder(2/6, gpt는 5/6)라 이 축이 주모델 전환의 관문이다.
+#   ★ 판정 완료 (2026-08-19, A-17 ②): 동수(4/6 vs 4/6) → 사전 확정 규칙대로 **ref2 채택**.
+#     **이 항목이 R5 라이브 엔진의 배포 설정이다.** `gemini_nb`는 R1·R2·R7 대조군으로 동결 유지.
+gemini_ref2:
+  adapter: google_genai
+  model_id: "gemini-3.1-flash-image"
+  params:
+    aspect_ratio: "3:4"
+    image_size: "1K"
+    max_ref_images: 2
+  cost_per_image_usd: 0.09       # 입력 이미지 1장 증가분은 1019 tok 기준 미미하다.
+                                 #   과대 추정 규율(gemini_nb 항목)을 그대로 따라 0.09 유지.
+  enabled: true
