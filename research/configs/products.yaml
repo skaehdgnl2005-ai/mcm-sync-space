@@ -19,7 +19,7 @@
 
 # No.08 — 무지 가죽 질감 + 골드 플레이트
 MMPGADC01BK001:
-  name: "바이에른 다이아몬드 카프스킨 레더 쇼퍼백"
+  name: "X라지 Dia 카프스킨 쇼퍼"
   category: 쇼퍼백
   material: "카프스킨 레더, 다이아몬드 모노그램 코튼 안감"
   color_hardware: "블랙, 24K 골드 도금 브라스 플레이트"
@@ -31,9 +31,9 @@ MMPGADC01BK001:
 
 # No.09 — 베이크오프 최난도: 비세토스 시그니처 패턴 재현 + cross
 MMRGATA04CO001:
-  name: "나파 가죽 트림 비세토스 모노그램 캔버스 Aren 미디엄 크로스바디 백"
+  name: "S Aren 비세토스 크로스바디"
   category: 크로스바디백
-  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 코튼 트윌 안감"
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 패브릭 웨빙 스트랩, 코튼 트윌 안감"
   color_hardware: "꼬냑, 24K 골드 도금 브라스 플레이트"
   wear_position: cross         # DB ⑦ = #크로스_착용
   ref_images:                  # 1 = 정면 / 2 = 탑다운 상단 뷰, 지퍼·두께 (578x842)
@@ -45,7 +45,7 @@ MMRGATA04CO001:
 #   ★ 4종 중 유일하게 하드웨어가 **실버**다. c1 fail 기준에 "골드·실버 뒤바뀜"이
 #     있으므로, 모델이 다른 3종처럼 골드로 그리는지가 이 SKU의 핵심 관찰 포인트다.
 MMKGATA03MT001:
-  name: "브라스 로고 플레이트 멀티컬러 나일론 Aren 노바 백팩"
+  name: "M Aren 노바 나일론 백팩"
   category: 백팩
   material: "바디: 폴리에스터 100%, 트림: 나일론 100%, 패브릭 안감"
   color_hardware: "레드/네이비 멀티컬러, 다크 실버톤 코발트 메탈 플레이트"
@@ -56,14 +56,133 @@ MMKGATA03MT001:
   size: "약 9 × 31 × 43 cm, 스트랩 길이: 77~92 cm, 핸들 드롭: 6 cm"   # 계약 밖 (위 주석 참고)
 
 # No.12 — 스카프 1케이스. 포함 여부 = R2 판정(05 §5) → 공통 문서 미결② 해소
+#   ⚠ 2026-08-19 자산 교체: 기존 1.jpg가 **842×832**로 §7.1 "정면컷 긴 변 1024px 이상"을
+#     위반하고 있었다(R2 이전 수집분). 같은 각도(_01)를 4000px 마스터에서 여백 6%로 다시 클립해
+#     **1498×1536**으로 교체했다. 컷·구도는 동일하고 해상도만 올라간다. 원본은
+#     assets/_originals/products/MEFGAMM12CO001/ 에 보존.
 MEFGAMM12CO001:
-  name: "페이즐리 프린트 비세토스 모티프 코튼 실크 스카프"
+  name: "프리 사이즈 페이즐리 코튼 실크 스카프"
   category: 스카프
   material: "코튼 실크 혼방"
   color_hardware: "꼬냑, 대비되는 그린 스트라이프 테두리"
   wear_position: neck          # DB ⑦ = #목_착용
   ref_images: [assets/products/MEFGAMM12CO001/1.jpg]
   size: "약 57 × 57 × 0 cm"   # 계약 밖 (위 주석 참고)
+
+# --- 밀라노 에디션 잔여 가방 SKU (2026-08-18 수집) --------------------------------
+# 출처: MCM 공식몰(kr.mcmworldwide.com) PDP 팩샷을 Playwright로 클립 스크린샷.
+#   수집 규격은 00-common §7.1 — 화이트/뉴트럴 팩샷 · 정면 1장 필수(긴 변 ≥1024) ·
+#   스트랩 카테고리(cross·shoulder·back)는 **스트랩 선명 컷 1장 필수** · 모델 착용컷 금지.
+#   갤러리 각도 ID(_01·_04·_05 …)와 원본 URL은 각 SKU 주석에 남긴다. 착용컷(_09~_11)은
+#   전부 제외했다.
+#
+# **프레이밍**: 공식몰 마스터는 4000px 캔버스에 제품이 11~43%만 차지한다. 그대로 쓰면
+#   prep_assets의 긴 변 1536 축소 후 제품 실효 해상도가 기존 4종(1379~1466px)의 절반까지
+#   떨어져 c1(패턴·로고·하드웨어) 판정이 입력 해상도 때문에 불리해진다. 그래서 브라우저
+#   안에서 제품 바운딩 박스를 구해 **여백 6%로 클립**했다 — 채움 75~100%로 기존 4종의
+#   관례(75~90%)와 맞춘다. 확대(업스케일)는 하지 않았다.
+#
+# name·material·color_hardware는 위 4종과 같은 규율로 **xlsx 원문 그대로**다.
+#
+# ✅ 2026-08-19 정정 — 위에 있던 "No.02·No.05 제품명은 공식몰과 다르지만 임의 수정하지 않고
+#   원문을 유지한다"는 보류 지시는 **해제**됐다. 라이브 전수 대조 결과 밀라노 시트는 2건이
+#   아니라 **12/12 전부** PDP 제목과 달랐고(도쿄·파리·뮌헨은 36/36 일치), 원인은 PDP `title`이
+#   아니라 **`meta[name=description]` 후반 태그라인을 압축**한 것으로 특정됐다. 결정적 증거는
+#   xlsx `오버롤`이 title의 `오버올`이 아니라 meta의 `오버롤`과 일치한다는 점이다.
+#   → xlsx의 밀라노 `공식 제품명` 12건을 PDP 제목(말미 컬러 토큰 제거)으로 교체했고, 이 파일의
+#     `name`도 같은 값으로 맞췄다. 즉 "xlsx 원문 그대로"라는 이 파일의 불변조건은 유지된다.
+#
+# ⚠ 반대로 **`MWRGATA05BK001`(No.05)의 `color_hardware`는 절대 고치지 말 것.**
+#   한국 PDP 스펙 불릿은 `24K 골드 도금 브라스 하드웨어`라고 쓰지만 **그 줄이 사이트 오류**다:
+#     · en_JP 동일 SKU  = `Silver-tone cobalt brass hardware`
+#     · 꼬냑 형제 MWRGATA05CO001 = `24k gold-plated brass` → 블랙 PDP가 꼬냑 카피를 오배치
+#     · 제품 사진 HSV 정량(같은 부위 클래스프): 이 SKU 골드비율 0.0000 vs 실제 골드
+#       MWRGATA01BK001 0.3070. 배경 R−B가 양쪽 0.0000이라 웜 캐스트 탓도 아니다.
+#   현재 값 `블랙, 실버톤 브라스`가 **맞다**. 08-notice §3 ① 및 00-common §9의
+#   "심각·우선 수정" 지시는 근거가 이 잘못된 PDP 한 줄이었으므로 따르면 안 된다.
+
+# No.01 — 백팩. back = 스트랩 컷 필수 카테고리 (§7.1 ⚠, A-9 ②: ref 1장 1/6 → 2장 4/4)
+#   ⚠ material 원문에 어깨 스트랩(웨빙+패딩) 소재가 없다 — MMKGATA03MT001과 같은 결손.
+#     §7.1 ⚠⚠ "부수 관찰(B 확인 요청)" 대상에 이 SKU를 추가할 것.
+MMKGSVE01K8001:
+  name: "M Stark 비세토스 사이드 스터드 백팩"
+  category: 백팩
+  material: "비세토스 모노그램 캔버스, 나파 가죽, 극세사 스웨이드"
+  color_hardware: "카키 모스, 실버톤 코발트 브라스"
+  wear_position: back          # DB ⑦ = #등_착용
+  ref_images:                  # 1 = 정면(_01) / 2 = 후면 등판(_04) — 어깨 스트랩 선명 [필수컷]
+    - assets/products/MMKGSVE01K8001/1.jpg
+    - assets/products/MMKGSVE01K8001/2.jpg
+  size: "약 16 × 33 × 43 cm"   # 계약 밖
+
+# No.02 — 숄더백. shoulder = 스트랩 컷 필수 카테고리
+#   정면컷(_01)에 얇은 레더 숄더 스트랩이 **전장 그대로** 흰 배경 위에 보인다 →
+#   MMRGATA04CO001처럼 프레임 가장자리에서 잘리는 문제가 없어 정면컷이 곧 스트랩 컷이다.
+#   보조컷(_05)은 스트랩 부착부·D링·다이아몬드 참 클로즈업으로 재질·하드웨어를 보강한다.
+MWSGATA01BK001:
+  name: "S Aren 비세토스 E/W 숄더백"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 나파 가죽, 극세사 스웨이드"
+  color_hardware: "블랙, 실버톤 코발트 브라스"
+  wear_position: shoulder      # DB ⑦ = #어깨_착용
+  ref_images:                  # 1 = 정면(_01, 스트랩 전장) / 2 = 스트랩 부착부·D링·참(_05)
+    - assets/products/MWSGATA01BK001/1.jpg
+    - assets/products/MWSGATA01BK001/2.jpg
+  size: "약 9 × 29 × 12 cm, 핸들 드롭 27 cm"   # 계약 밖
+
+# No.04 — 쇼퍼백. shoulder = 스트랩 컷 필수 카테고리 (No.02와 같은 이유로 정면컷이 스트랩 컷)
+#   ⚠ 공식몰 _04 컷에는 동봉 파우치가 함께 찍혀 있어 **의도적으로 제외**했다.
+#     프레임에 물체가 둘이면 생성 모델이 가방을 두 개 그리거나 파우치를 본품으로 오인한다.
+MWPGALR02BK001:
+  name: "S New Liz 엠보스드 모노그램 레더 쇼퍼"
+  category: 쇼퍼백
+  material: "풀그레인 나파 가죽, 극세사 스웨이드 안감"
+  color_hardware: "블랙, 실버톤 코발트 브라스 플레이트"
+  wear_position: shoulder      # DB ⑦ = #어깨_착용, #손_파지
+  ref_images:                  # 1 = 정면(_01, 스트랩 전장) / 2 = 스트랩 부착부·D링·로고 플레이트(_05)
+    - assets/products/MWPGALR02BK001/1.jpg
+    - assets/products/MWPGALR02BK001/2.jpg
+  size: "약 15 × 25 × 31 cm, 핸들 스트랩 드롭: 26 cm"   # 계약 밖
+
+# No.05 — 배니티 케이스. wear_position은 ⑦ 첫 값(#손_파지)을 따르지만 ⑦에 #크로스_착용도
+#   있어, cross로 매칭될 때를 대비해 보조컷을 **스트랩 전장·버클 컷**으로 골랐다 (§7.1 ⚠⚠).
+MWRGATA05BK001:
+  name: "S Aren 비세토스 레더 믹스 베니티 케이스"
+  category: 배니티케이스
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 극세사 스웨이드 안감"
+  color_hardware: "블랙, 실버톤 브라스"
+  wear_position: hand          # DB ⑦ = #손_파지, #크로스_착용
+  ref_images:                  # 1 = 정면(_01, 스트랩 장착) / 2 = 스트랩 전장·버클(_04)
+    - assets/products/MWRGATA05BK001/1.jpg
+    - assets/products/MWRGATA05BK001/2.jpg
+  size: "약 9 × 23 × 14 cm, 스트랩 길이: 125~133 cm, 핸들 드롭: 4 cm"   # 계약 밖
+
+# No.07 — 토트백. shoulder = 스트랩 컷 필수 카테고리. 핸들이 비세토스 캔버스+레더 트림이라
+#   재질이 본체와 같고 정면컷(_01)에 전장이 보인다. 보조컷(_05)은 핸들 부착부·리벳·패턴 확대.
+MWTGATA03PZ001:
+  name: "L Aren 비세토스 스쿨 토트"
+  category: 토트백
+  material: "비세토스 모노그램 캔버스, 레더 트림, 패브릭 안감"
+  color_hardware: "핑크, 16K 골드 도금 메탈 플레이트"
+  wear_position: shoulder      # DB ⑦ = #어깨_착용, #손_파지
+  ref_images:                  # 1 = 정면(_01, 핸들 전장) / 2 = 핸들 부착부·리벳·비세토스 패턴(_05)
+    - assets/products/MWTGATA03PZ001/1.jpg
+    - assets/products/MWTGATA03PZ001/2.jpg
+  size: "약 14 × 39 × 29 cm, 핸들 길이: 33 cm"   # 계약 밖
+
+# No.11 — 드로우스트링백. ⑦에 #어깨_착용·#크로스_착용이 함께 있어 보조컷을 **체인 핸들
+#   클로즈업**으로 골랐다. 이 SKU의 c1 핵심은 24K 골드 체인이며, 다른 3종이 실버인
+#   밀라노 카탈로그에서 골드·실버 뒤바뀜(§7.1 c1 fail 기준)이 가장 나기 쉬운 자리다.
+MWDGADU03BK001:
+  name: "미니 Pina 스터드 장식 카프스킨 드로우스트링 백"
+  category: 드로우스트링백
+  material: "100% 카프스킨 레더, 극세사 스웨이드 안감"
+  color_hardware: "블랙, 24K 골드 도금 브라스 (체인 핸들 & 스터드)"
+  wear_position: hand          # DB ⑦ = #손_파지, #어깨_착용, #크로스_착용
+  ref_images:                  # 1 = 정면(_01, 체인+레더 크로스 스트랩) / 2 = 체인·스터드·플레이트(_05)
+    - assets/products/MWDGADU03BK001/1.jpg
+    - assets/products/MWDGADU03BK001/2.jpg
+  size: "약 18 × 30 × 34 cm, 핸들 드롭: 19 cm, 스트랩 길이: 96~120 cm"   # 계약 밖
 
 # --- R6 데모 자산 전용 엔트리 (2026-08-18) ------------------------------------
 # No.09와 **같은 SKU·같은 계약 필드**이고 `ref_images`만 다르다. 별도 키로 두는 이유는
@@ -81,12 +200,509 @@ MEFGAMM12CO001:
 #   끊긴 구간뿐이라 모델이 근거로 삼지 못했다. `back`에서 같은 실패(스트랩 색 지어내기)가
 #   후면 등판컷 한 장으로 1/6 → 4/4로 뒤집힌 선례(A-9 ②)를 그대로 적용한 것이다.
 MMRGATA04CO001_R6:
-  name: "나파 가죽 트림 비세토스 모노그램 캔버스 Aren 미디엄 크로스바디 백"
+  name: "S Aren 비세토스 크로스바디"
   category: 크로스바디백
-  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 코튼 트윌 안감"
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 패브릭 웨빙 스트랩, 코튼 트윌 안감"
   color_hardware: "꼬냑, 24K 골드 도금 브라스 플레이트"
   wear_position: cross
   ref_images:                  # 1 = 정면(필수) / 3 = 웨빙 스트랩·숄더패드·스냅훅 클로즈업
     - assets/products/MMRGATA04CO001/1.jpg
     - assets/products/MMRGATA04CO001/3.jpg
   size: "약 7 × 27 × 21 cm, 스트랩 길이: 85~151.5 cm"   # 계약 밖
+
+# --- 도쿄·파리·뮌헨 에디션 페르소나 SKU (2026-08-19 · A 선행 큐레이션) ------------
+# 00-common §9 미결③(팀원 에디션 데이터 미도착)을 A가 선행 큐레이션으로 해소한 결과다.
+# name·category·material·color_hardware·size는 `MCM 제품 세부 데이터.xlsx`의 신규 시트
+#   (도쿄/파리/뮌헨 에디션 제품 메타데이터) **원문 그대로**이고, 그 시트는 전부
+#   kr.mcmworldwide.com PDP 원문에서 기계 변환해 만들었다 (밀라노 시트처럼 사람이 옮겨
+#   적은 값이 아니다 — 라인명 오기 재발 방지).
+# ⚠ 팀원 데이터가 나중에 도착하면 그쪽이 원본이 되고 이 항목은 병합/대체 대상이다.
+#
+# 팩샷: 메모리 mcm-packshot-collection 절차 그대로 — search?q={SKU} 302 → 4000px 마스터 →
+#   배경 rgb(247,247,247) 바운딩박스 → 여백 6% 클립 → prep_assets(긴 변 1536·EXIF 제거·q95).
+#   착용컷(_09~_11)은 전부 제외. 채움 80~94%로 기존 관례(75~100%)와 맞다.
+
+# p4 (tokyo+commute+mono) — L Aren 비세토스 N/S 토트
+#   1 = 정면(_01) — 패브릭 웨빙 스트랩 **전장**이 프레임 안에 있고 스냅훅·실버 슬라이더 버클·
+#     조직 텍스처까지 4000px에서 판독된다. shoulder 스트랩 필수컷을 정면컷이 겸한다
+#     (No.09가 실패한 조건 '스트랩이 프레임 가장자리에서 잘림'과 정반대).
+#   2 = 후면(_04) — 비세토스 패턴 대면적 + 스트랩 부착 스냅훅.
+#   ⚠ 이 SKU 갤러리에는 웨빙 **클로즈업 컷이 없다**(_01~_04 + 착용컷뿐). §7.1 ⚠ 실효 검증대로
+#     웨빙 '재질·직조'는 레퍼런스로 완전히 고쳐지지 않는다 — N-best 물량 + 사람 선별 전제.
+MMTFATA01BK001:
+  name: "L Aren 비세토스 N/S 토트"
+  category: 토트백
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 패브릭 웨빙 스트랩, 코튼 트윌 안감"
+  color_hardware: "블랙, 다크 실버톤 코발트 메탈 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지 (첫 값)
+  ref_images:
+    - assets/products/MMTFATA01BK001/1.jpg
+    - assets/products/MMTFATA01BK001/2.jpg
+  size: "약 10 × 36 × 38 cm, 스트랩 길이:76~132 cm, 핸들 길이: 11 cm"   # 계약 밖
+
+# p5 (paris+outing+mono) — 미니 Diamond 비세토스 레더 믹스 숄더백
+#   1 = 정면(_01) — 가죽 체인 스트랩 전장이 프레임 안에 있다(스트랩 길이 60cm로 짧아 잘림 없음).
+#   2 = 클로즈업(_05) — 체인·가죽 위빙 스트랩 + 비세토스 패턴 + 라우렐 로고 엠블럼.
+#   ★ 스트랩 60cm는 숄더 전용이다 → wear_position이 구조적으로 shoulder로 고정되고,
+#     §7.1이 지목한 cross 붕괴(팔–몸통 틈 1/16)를 SKU 선택 단계에서 회피한다.
+MWRGAAK01BK001:
+  name: "미니 Diamond 비세토스 레더 믹스 숄더백"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 카프스킨 레더 트림, 패브릭 안감"
+  color_hardware: "블랙, 실버톤 코발트 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용 (첫 값)
+  ref_images:
+    - assets/products/MWRGAAK01BK001/1.jpg
+    - assets/products/MWRGAAK01BK001/2.jpg
+  size: "약 5 × 20 × 13 cm, 스트랩 길이: 60cm"   # 계약 밖
+
+# p6 (munich+daily+neutral) — S Aren 비세토스 E/W 숄더백
+#   1 = 정면(_01) — 가죽 숄더 스트랩 전장. 밀라노 No.02(MWSGATA01BK001)와 같은 스타일의
+#     베이지 컬러웨이라 '정면컷이 곧 스트랩 컷'이라는 검증된 프레이밍이 그대로 성립한다.
+#   2 = 클로즈업(_05) — 비세토스 패턴 + 바이에른 다이아몬드 가죽 참 + 스트랩 부착부.
+MWSGATA01I8001:
+  name: "S Aren 비세토스 E/W 숄더백"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 레더 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "베이지+블랙, 16K 골드 도금 메탈 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용 (첫 값)
+  ref_images:
+    - assets/products/MWSGATA01I8001/1.jpg
+    - assets/products/MWSGATA01I8001/2.jpg
+  size: "약 9 × 29 × 12 cm, 핸들 드롭: 27 cm"   # 계약 밖
+
+# --- 도쿄·파리·뮌헨 에디션 잔여 33 SKU (2026-08-19 수집) --------------------------
+# 위 p4~p6 3종과 같은 배치다. 계약 필드는 전부 신규 xlsx 3시트 원문 = PDP 원문 기계 변환.
+# 각도는 CDN 프로빙으로 존재 확인 후 **컨택트시트로 육안 선정**했다 (§7.1 ⚠⚠ — 보조컷은
+#   장수가 아니라 무엇이 찍혔는지의 문제다). 착용컷은 _09~_11 외에 **_12·_13에도 있어서**
+#   해당 SKU에서 함께 제외했다. `_04`가 '동봉 파우치 포함 컷'인 SKU도 제외했다
+#   (밀라노 No.04 선례 — 프레임에 물체가 둘이면 모델이 가방을 두 개 그린다).
+
+# 도쿄 No.02 — L Dia 비세토스 카프 스킨 레더 쇼퍼
+#   1 = 정면(_01) / 2 = _05 — 핸들 스트랩 부착부·로고 브라스 플레이트·안감 클로즈업 (_04는 파우치 동봉이라 제외)
+MMPGSDC02BK001:
+  name: "L Dia 비세토스 카프 스킨 레더 쇼퍼"
+  category: 쇼퍼백
+  material: "이탈리안 카프스킨 레더, 다이아몬드 그래픽 프린트가 더해진 패브릭 라이닝"
+  color_hardware: "블랙, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MMPGSDC02BK001/1.jpg
+    - assets/products/MMPGSDC02BK001/2.jpg
+  size: "약 15 × 45 × 36 cm, 핸들 드롭: 22cm"   # 계약 밖
+
+# 도쿄 No.03 — M New Liz 엠보스드 모노그램 레더 쇼퍼
+#   1 = 정면(_01) / 2 = _05 — 핸들 스트랩 부착부·D링·엠보스드 모노그램 클로즈업 (_04 파우치 동봉 제외)
+MWPGALR01BK001:
+  name: "M New Liz 엠보스드 모노그램 레더 쇼퍼"
+  category: 쇼퍼백
+  material: "풀그레인 가죽, 스웨이드 마감의 극세사 안감"
+  color_hardware: "블랙, 실버톤 코발트 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MWPGALR01BK001/1.jpg
+    - assets/products/MWPGALR01BK001/2.jpg
+  size: "약 17 × 30 × 35 cm, 핸들 스트랩 드롭: 26.5 cm"   # 계약 밖
+
+# 도쿄 No.04 — S New Liz 비세토스 쇼퍼
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·핸들 부착부·로고 플레이트 클로즈업 (_04 파우치 동봉 제외)
+MWPGSLR03I8001:
+  name: "S New Liz 비세토스 쇼퍼"
+  category: 쇼퍼백
+  material: "비세토스 모노그램 캔버스, 레더 트림, 패브릭 안감"
+  color_hardware: "베이지+블랙, 16K 골드 도금 메탈 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MWPGSLR03I8001/1.jpg
+    - assets/products/MWPGSLR03I8001/2.jpg
+  size: "약 15 × 25 × 31 cm, 핸들 드롭: 26cm"   # 계약 밖
+
+# 도쿄 No.05 — L Aren 비세토스 N/S 토트
+#   1 = 정면(_01) / 2 = _06 — 정면 클로즈업 — 비세토스 패턴·가죽 행택·웨빙 스트랩 부착부
+MMTGSTA01CO001:
+  name: "L Aren 비세토스 N/S 토트"
+  category: 토트백
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 로고 우븐 웨빙 스트랩, 코튼 트윌 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MMTGSTA01CO001/1.jpg
+    - assets/products/MMTGSTA01CO001/2.jpg
+  size: "약 10 × 36 × 38 cm, 스트랩 길이: 76~132 cm, 핸들 드롭: 11 cm"   # 계약 밖
+
+# 도쿄 No.06 — X라지 Aren 노바 나일론 토트
+#   1 = 정면(_01) / 2 = _06 — 측면 클로즈업 — 나일론 배색(레드/네이비)·비세토스 모티프·스트랩
+MMTGATA02MT001:
+  name: "X라지 Aren 노바 나일론 토트"
+  category: 토트백
+  material: "폴리에스터 100%, 나일론 100% 트림, 패브릭 안감"
+  color_hardware: "멀티, Dark silver-tone cobalt metal hardware"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MMTGATA02MT001/1.jpg
+    - assets/products/MMTGATA02MT001/2.jpg
+  size: "약 10 × 46 × 34 cm, 핸들 스트랩 길이: 19~32cm, 핸들 드롭: 27cm"   # 계약 밖
+
+# 도쿄 No.07 — L Aren 비세토스 호보
+#   1 = 정면(_01) / 2 = _04 — 정면 변형 — 가죽 숄더 스트랩 전장·골드 자물쇠. _02·_03은 클립 후 짧은 변 가드 미달
+MWHESTA02BK001:
+  name: "L Aren 비세토스 호보"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 스웨이드 마감 마이크로파이버 안감"
+  color_hardware: "블랙, 24K 도금 브라스 금속 장식"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용
+  ref_images:
+    - assets/products/MWHESTA02BK001/1.jpg
+    - assets/products/MWHESTA02BK001/2.jpg
+  size: "약 11 × 34 × 33 cm, 스트랩 길이: 92.5cm ~ 116.5cm"   # 계약 밖
+
+# 도쿄 No.08 — 엑스트라 미니 Toni 비세토스 탑 지퍼 숄더
+#   1 = 정면(_01) / 2 = _04 — 후면 — 비세토스 패턴 대면적. _02는 가드 미달
+MWPFSMT03BK001:
+  name: "엑스트라 미니 Toni 비세토스 탑 지퍼 숄더"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 천연 나파 가죽 트림, 패브릭 안감"
+  color_hardware: "블랙, 실버톤 코발트 메탈 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #크로스_착용
+  ref_images:
+    - assets/products/MWPFSMT03BK001/1.jpg
+    - assets/products/MWPFSMT03BK001/2.jpg
+  size: "약 9 × 16 × 14 cm, 스트랩 길이: 109.5~133.5cm, 핸들 길이 9cm"   # 계약 밖
+
+# 도쿄 No.09 — M Aren 노바 모노그램 ECONYL® 백팩
+#   1 = 정면(_01) / 2 = _04 — 후면 등판 — 어깨 스트랩 전장 [back 스트랩 필수컷]
+MMKGATA02BK001:
+  name: "M Aren 노바 모노그램 ECONYL® 백팩"
+  category: 백팩
+  material: "ECONYL® 재생 나일론, 나일론 트림, 패브릭 안감"
+  color_hardware: "블랙, Dark silver-tone cobalt metal hardware"
+  wear_position: back      # 시트 ⑦ = #등_착용
+  ref_images:
+    - assets/products/MMKGATA02BK001/1.jpg
+    - assets/products/MMKGATA02BK001/2.jpg
+  size: "약 9 × 31 × 43 cm, 스트랩 길이: 77~92 cm. 핸들 드롭: 6cm"   # 계약 밖
+
+# 도쿄 No.10 — S Aren 엠보스드 모노그램 레더 슬링백
+#   1 = 정면(_01) / 2 = _05 — 웨빙 스트랩·엠보스드 모노그램 클로즈업 [cross 스트랩 재질]
+MMLGATA02BK001:
+  name: "S Aren 엠보스드 모노그램 레더 슬링백"
+  category: 크로스바디백
+  material: "나파 레더, 패브릭 웨빙 스트랩, 코튼 트윌 안감"
+  color_hardware: "블랙, 다크 실버톤 코발트 메탈 하드웨어"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용
+  ref_images:
+    - assets/products/MMLGATA02BK001/1.jpg
+    - assets/products/MMLGATA02BK001/2.jpg
+  size: "약 9 × 21 × 37 cm, 스트랩 길이: 66.5~116cm"   # 계약 밖
+
+# 도쿄 No.11 — S Aren 노바 모노그램 ECONYL® 크로스바디
+#   1 = 정면(_01) / 2 = _05 — 웨빙 스트랩 대면적·톤온톤 비세토스 클로즈업 [cross 스트랩 재질]
+MMRGATA07BK001:
+  name: "S Aren 노바 모노그램 ECONYL® 크로스바디"
+  category: 크로스바디백
+  material: "ECONYL® 재생 나일론, 나일론 트림, 패브릭 안감"
+  color_hardware: "블랙, Dark silver-tone cobalt metal hardware"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용
+  ref_images:
+    - assets/products/MMRGATA07BK001/1.jpg
+    - assets/products/MMRGATA07BK001/2.jpg
+  size: "약 7 × 29 × 19 cm, 스트랩 길이: 52~109 cm"   # 계약 밖
+
+# 도쿄 No.12 — 프리 사이즈 M50 로고 쁘띠 실크 스카프
+#   1 = 정면(_01) / 2 = _02 — 양면 펼침 — 앞면 라우렐 아트워크 / 뒷면 모티프 (리버서블)
+MEFGAMM13BK001:
+  name: "프리 사이즈 M50 로고 쁘띠 실크 스카프"
+  category: 스카프
+  material: "실크 100%"
+  color_hardware: "블랙, 앞면 라우렐 로고 아트워크 · 뒷면 모티프 (양면 디자인)"
+  wear_position: neck      # 시트 ⑦ = #목_착용
+  ref_images:
+    - assets/products/MEFGAMM13BK001/1.jpg
+    - assets/products/MEFGAMM13BK001/2.jpg
+  size: "약 8 × 120 × 0 cm"   # 계약 밖
+
+# 파리 No.02 — 미니 Pina 스터드 장식 카프스킨 베니티 케이스
+#   1 = 정면(_01) / 2 = _04 — 가죽 스트랩 전장 — ⑦에 #크로스_착용이 있어 밀라노 No.05 선례 적용
+MWRGATA01BK001:
+  name: "미니 Pina 스터드 장식 카프스킨 베니티 케이스"
+  category: 배니티 케이스
+  material: "100% 카프스킨, 스웨이드 마감의 극세사 안감"
+  color_hardware: "블랙, 24K 골드 도금 브라스 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #크로스_착용
+  ref_images:
+    - assets/products/MWRGATA01BK001/1.jpg
+    - assets/products/MWRGATA01BK001/2.jpg
+  size: "약 6 × 19 × 12 cm, 스트랩 길이: 103~135cm, 스트랩 드롭: 60cm, 핸들 드롭: 4cm"   # 계약 밖
+
+# 파리 No.03 — S Pina 스터드 장식 카프스킨 탬버린 백
+#   1 = 정면(_01) / 2 = _05 — 카프스킨 그레인·골드 스터드·태슬·스트랩 부착부 클로즈업
+MWRGAOB03BK001:
+  name: "S Pina 스터드 장식 카프스킨 탬버린 백"
+  category: 크로스바디백
+  material: "100% 카프스킨, 스웨이드 마감의 극세사 안감"
+  color_hardware: "블랙, 24K 골드 도금 브라스 하드웨어"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용, #어깨_착용
+  ref_images:
+    - assets/products/MWRGAOB03BK001/1.jpg
+    - assets/products/MWRGAOB03BK001/2.jpg
+  size: "약 6 × 19 × 19 cm, 120.5~140.5 cm strap length, Handle drop: 4 cm"   # 계약 밖
+
+# 파리 No.04 — S Diamond 비세토스 레더 믹스 클러치
+#   1 = 정면(_01) / 2 = _06 — 체인 스트랩 전장 세로컷. ⚠ _01은 클러치 형태라 짧은 변 692px (긴 변 1536 통과)
+MWCGAAK01CO001:
+  name: "S Diamond 비세토스 레더 믹스 클러치"
+  category: 클러치
+  material: "비세토스 모노그램 캔버스, 카프스킨 레더 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MWCGAAK01CO001/1.jpg
+    - assets/products/MWCGAAK01CO001/2.jpg
+  size: "약 5 × 28 × 13 cm, 스트랩 길이: 115~131 cm"   # 계약 밖
+
+# 파리 No.05 — S Pina 비세토스 탬버린 백
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·스터드·태슬·스트랩 부착부 클로즈업
+MWRGAOB01CO001:
+  name: "S Pina 비세토스 탬버린 백"
+  category: 크로스바디백
+  material: "비세토스 모노그램 캔버스, 스터드 장식 나파 가죽 트림, 가죽 크로스바디 스트랩, 스웨이드 마감의 극세사 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용, #어깨_착용
+  ref_images:
+    - assets/products/MWRGAOB01CO001/1.jpg
+    - assets/products/MWRGAOB01CO001/2.jpg
+  size: "약 6 × 19 × 19 cm, 120.5~140.5 cm strap length, Handle drop: 4 cm"   # 계약 밖
+
+# 파리 No.06 — M Diamant 3D 다이아몬드 자카드 숄더백
+#   1 = 정면(_01) / 2 = _06 — 다이아몬드 자카드 직조 텍스처·사선 지퍼 클로즈업 (이 SKU c1 핵심)
+MWSGAAK02MT001:
+  name: "M Diamant 3D 다이아몬드 자카드 숄더백"
+  category: 숄더백
+  material: "다이아몬드 모노그램 자카드, 100% 카프스킨 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "멀티, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용
+  ref_images:
+    - assets/products/MWSGAAK02MT001/1.jpg
+    - assets/products/MWSGAAK02MT001/2.jpg
+  size: "약 14 × 34 × 23 cm, 스트랩 드롭: 50 cm"   # 계약 밖
+
+# 파리 No.07 — L Tracy 비세토스 호보
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·로고 자물쇠·스트랩 클로즈업 (_12는 모델컷)
+MWHGAXT03CO001:
+  name: "L Tracy 비세토스 호보"
+  category: 숄더백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용
+  ref_images:
+    - assets/products/MWHGAXT03CO001/1.jpg
+    - assets/products/MWHGAXT03CO001/2.jpg
+  size: "약 11 × 33 × 31 cm, 스트랩 길이: 73~105cm"   # 계약 밖
+
+# 파리 No.08 — M Dessau 비세토스 드로우스트링 백
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·로고 브라스 플레이트·스트랩 부착부 (_04 파우치 동봉 제외)
+MWDGADU02WT001:
+  name: "M Dessau 비세토스 드로우스트링 백"
+  category: 드로우스트링백
+  material: "비세토스 모노그램 캔버스, 레더 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "화이트, 실버톤 코발트 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MWDGADU02WT001/1.jpg
+    - assets/products/MWDGADU02WT001/2.jpg
+  size: "약 14 × 22 × 28 cm, 스트랩 길이: 97~121 cm, 핸들 드롭: 20 cm"   # 계약 밖
+
+# 파리 No.09 — S New Liz 비세토스 쇼퍼
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·로고 플레이트·D링·핸들 부착부 (_04 파우치 동봉 제외)
+MWPGSLR03BK001:
+  name: "S New Liz 비세토스 쇼퍼"
+  category: 쇼퍼백
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 패브릭 안감"
+  color_hardware: "블랙, 실버톤 코발트 브라스 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MWPGSLR03BK001/1.jpg
+    - assets/products/MWPGSLR03BK001/2.jpg
+  size: "약 15 × 25 × 31 cm, 핸들 드롭: 26 cm"   # 계약 밖
+
+# 파리 No.10 — S Milla 그레인 가죽 토트
+#   1 = 정면(_01) / 2 = _05 — 그레인 레더 질감·라우렐 로고·바이에른 다이아몬드 참 클로즈업
+MWTGAMA02OQ001:
+  name: "S Milla 그레인 가죽 토트"
+  category: 토트백
+  material: "그레인 레더, 스웨이드 마감의 극세사 안감"
+  color_hardware: "오렌지, 24K 골드 도금 브라스 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MWTGAMA02OQ001/1.jpg
+    - assets/products/MWTGAMA02OQ001/2.jpg
+  size: "약 11 × 25 × 18 cm, 스트랩 길이: 104~128 cm, 핸들 드롭: 9 cm"   # 계약 밖
+
+# 파리 No.11 — 미니 Pina 스터드 장식 카프스킨 드로우스트링 백팩
+#   1 = 정면(_01) / 2 = _04 — 후면 등판 — 어깨 스트랩 전장 [back 스트랩 필수컷]
+MWKGATA01BK001:
+  name: "미니 Pina 스터드 장식 카프스킨 드로우스트링 백팩"
+  category: 백팩
+  material: "100% 카프스킨, 스웨이드 마감의 극세사 안감"
+  color_hardware: "블랙, 24K 골드 도금 브라스 하드웨어"
+  wear_position: back      # 시트 ⑦ = #등_착용, #크로스_착용
+  ref_images:
+    - assets/products/MWKGATA01BK001/1.jpg
+    - assets/products/MWKGATA01BK001/2.jpg
+  size: "약 11 × 23 × 25 cm, 스트랩 길이: 85~96cm, 핸들 드롭: 8cm"   # 계약 밖
+
+# 파리 No.12 — 프리 사이즈 M50 로고 실크 스카프
+#   1 = 정면(_01) / 2 = _03 — 스터드 테두리·1976 라우렐 그래픽 클로즈업 (_12는 모델컷)
+MEFGAMM09BK001:
+  name: "프리 사이즈 M50 로고 실크 스카프"
+  category: 스카프
+  material: "실크 100%"
+  color_hardware: "블랙, 'MCM 1976' 라우렐 로고 모티프"
+  wear_position: neck      # 시트 ⑦ = #목_착용
+  ref_images:
+    - assets/products/MEFGAMM09BK001/1.jpg
+    - assets/products/MEFGAMM09BK001/2.jpg
+  size: "약 90 × 90 × 0 cm"   # 계약 밖
+
+# 뮌헨 No.02 — M Dessau 비세토스 드로우스트링 백
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·로고 브라스 플레이트·스트랩 부착부 (_04 파우치 동봉 제외)
+MWDGSDU03CO001:
+  name: "M Dessau 비세토스 드로우스트링 백"
+  category: 드로우스트링백
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MWDGSDU03CO001/1.jpg
+    - assets/products/MWDGSDU03CO001/2.jpg
+  size: "약 14 × 28 × 23 cm, 스트랩 길이:97~121 cm ,핸들 드롭: 20 cm"   # 계약 밖
+
+# 뮌헨 No.03 — 55cm / 22인치 Ottomar 비세토스 위켄더
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·가죽 행택·로고 플레이트 클로즈업
+MMVGATT07K8001:
+  name: "55cm / 22인치 Ottomar 비세토스 위켄더"
+  category: 위켄더백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 패브릭 웨빙 스트랩, 스웨이드 마감의 극세사 안감"
+  color_hardware: "카키 모스, 실버톤 코발트 브라스 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MMVGATT07K8001/1.jpg
+    - assets/products/MMVGATT07K8001/2.jpg
+  size: "약 25 × 55 × 31 cm, 스트랩 길이: 75~132cm, 핸들 드롭: 13.5cm"   # 계약 밖
+
+# 뮌헨 No.04 — 프리 사이즈 모노그램 프린트 반다나 스카프
+#   1 = 정면(_01) / 2 = _02 — 접힘 상태 — 대각선 모노그램 프린트 배치
+MEFAAMM08CO001:
+  name: "프리 사이즈 모노그램 프린트 반다나 스카프"
+  category: 스카프
+  material: "코튼 80%, 실크 20%"
+  color_hardware: "꼬냑, 대각선 모노그램 프린트"
+  wear_position: neck      # 시트 ⑦ = #목_착용
+  ref_images:
+    - assets/products/MEFAAMM08CO001/1.jpg
+    - assets/products/MEFAAMM08CO001/2.jpg
+  size: "약 0 × 90 × 90 cm"   # 계약 밖
+
+# 뮌헨 No.05 — L 다이아몬드 비세토스 E/W 토트
+#   1 = 정면(_01) / 2 = _04 — 후면 — 비세토스 패턴 대면적. _02는 가드 미달, _05 없음
+MMTFAAK01CO001:
+  name: "L 다이아몬드 비세토스 E/W 토트"
+  category: 토트백
+  material: "비세토스 모노그램 캔버스, 천연 가죽 트림, 패브릭 크로스바디 스트랩, 코튼 트윌 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MMTFAAK01CO001/1.jpg
+    - assets/products/MMTFAAK01CO001/2.jpg
+  size: "약 14 × 38 × 32 cm, 스트랩 길이:76~136 cm, 핸들 길이: 11 cm"   # 계약 밖
+
+# 뮌헨 No.06 — L München 다이아몬드 자카드 토트
+#   1 = 정면(_01) / 2 = _05 — 다이아몬드 자카드 직조·바이에른 다이아몬드 참 클로즈업 (_12·_13은 모델컷)
+MWTGABO01MT001:
+  name: "L München 다이아몬드 자카드 토트"
+  category: 토트백
+  material: "다이아몬드 모노그램 자카드, 나파 가죽 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "멀티, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MWTGABO01MT001/1.jpg
+    - assets/products/MWTGABO01MT001/2.jpg
+  size: "약 15 × 38 × 28 cm, 스트랩 길이: 103~119cm, 핸들 드롭: 10cm"   # 계약 밖
+
+# 뮌헨 No.07 — L Pina 비세토스 스터드 장식 토트
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·골드 스터드·로고 플레이트 클로즈업
+MWTGATA01CO001:
+  name: "L Pina 비세토스 스터드 장식 토트"
+  category: 토트백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: shoulder      # 시트 ⑦ = #어깨_착용, #손_파지
+  ref_images:
+    - assets/products/MWTGATA01CO001/1.jpg
+    - assets/products/MWTGATA01CO001/2.jpg
+  size: "약 18 × 41 × 32 cm, 스트랩 길이: 112.5~136.5cm, 핸들 드롭: 12cm"   # 계약 밖
+
+# 뮌헨 No.08 — S–M 스타크 사이드 스터드 비세토스 백팩
+#   1 = 정면(_01) / 2 = _04 — 후면 등판 — 어깨 스트랩 전장 [back 스트랩 필수컷]
+MMKEAVE14CO001:
+  name: "S–M 스타크 사이드 스터드 비세토스 백팩"
+  category: 백팩
+  material: "비세토스 모노그램 캔버스, 천연 나파 가죽 트림, 인조 나파 안감"
+  color_hardware: "꼬냑, 24K 도금 메탈 금속 장식"
+  wear_position: back      # 시트 ⑦ = #등_착용
+  ref_images:
+    - assets/products/MMKEAVE14CO001/1.jpg
+    - assets/products/MMKEAVE14CO001/2.jpg
+  size: "약 13 × 30 × 38 cm, 스트랩 길이: 71cm ~ 87cm, 핸들 드롭: 7.5cm"   # 계약 밖
+
+# 뮌헨 No.09 — S Stark 사이드 스터드 비세토스 백팩
+#   1 = 정면(_01) / 2 = _04 — 후면 등판 — 어깨 스트랩 전장 [back 스트랩 필수컷]
+MMKEAVE15IG001:
+  name: "S Stark 사이드 스터드 비세토스 백팩"
+  category: 백팩
+  material: "비세토스 모노그램 캔버스, 천연 나파 가죽 트림, 인조 나파 안감"
+  color_hardware: "베이지, 도금 브라스 금속 장식"
+  wear_position: back      # 시트 ⑦ = #등_착용
+  ref_images:
+    - assets/products/MMKEAVE15IG001/1.jpg
+    - assets/products/MMKEAVE15IG001/2.jpg
+  size: "약 13 × 26 × 33 cm, 스트랩 길이: 74cm ~ 90cm, 핸들 드롭: 7cm"   # 계약 밖
+
+# 뮌헨 No.10 — 41cm / 16.14인치 Ottomar 비세토스 위켄더
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·가죽 행택·로고 플레이트 클로즈업
+MMVGATT01BK001:
+  name: "41cm / 16.14인치 Ottomar 비세토스 위켄더"
+  category: 위켄더백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 패브릭 웨빙 스트랩, 스웨이드 마감의 극세사 안감"
+  color_hardware: "블랙, 다크 메탈 하드웨어"
+  wear_position: hand      # 시트 ⑦ = #손_파지, #어깨_착용
+  ref_images:
+    - assets/products/MMVGATT01BK001/1.jpg
+    - assets/products/MMVGATT01BK001/2.jpg
+  size: "약 17 × 41 × 26 cm, 스트랩 길이: 72~127cm, 핸들 길이 12cm"   # 계약 밖
+
+# 뮌헨 No.11 — S Aren 비세토스 슬링백
+#   1 = 정면(_01) / 2 = _05 — 헤링본 웨빙 스트랩·비세토스 패턴 클로즈업 [cross 스트랩 재질]
+MMLGATA03CO001:
+  name: "S Aren 비세토스 슬링백"
+  category: 크로스바디백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 헤링본 패브릭 웨빙 스트랩, 코튼 트윌 안감"
+  color_hardware: "꼬냑, 24K 골드 도금 브라스 하드웨어"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용
+  ref_images:
+    - assets/products/MMLGATA03CO001/1.jpg
+    - assets/products/MMLGATA03CO001/2.jpg
+  size: "약 9 × 21 × 37 cm, 스트랩 길이: 66.5~116cm"   # 계약 밖
+
+# 뮌헨 No.12 — 미니 Aren 비세토스 슬링백
+#   1 = 정면(_01) / 2 = _05 — 비세토스 패턴·지퍼·D링·실버 하드웨어 클로즈업
+MMLGATA05K8001:
+  name: "미니 Aren 비세토스 슬링백"
+  category: 크로스바디백
+  material: "비세토스 모노그램 캔버스, 나파 가죽 트림, 스웨이드 마감의 극세사 안감"
+  color_hardware: "카키 모스, 실버톤 코발트 브라스 하드웨어"
+  wear_position: cross      # 시트 ⑦ = #크로스_착용
+  ref_images:
+    - assets/products/MMLGATA05K8001/1.jpg
+    - assets/products/MMLGATA05K8001/2.jpg
+  size: "약 7 × 23 × 31 cm, 스트랩 길이: 93~121 cm"   # 계약 밖

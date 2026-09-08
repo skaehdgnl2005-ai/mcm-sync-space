@@ -23,3 +23,7 @@ research/experiments/
 .DS_Store
 Thumbs.db
 *.log
+
+# 세션 스크래치 · 백업본
+scratchpad/
+*백업*.xlsx
